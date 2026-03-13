@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.canvas.Canvas?>
+ 
+<HBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="app.Controller"
+      alignment="CENTER"
+      spacing="20">
+
+    <VBox spacing="10">
+
+        <Canvas fx:id="canvas" width="400" height="300"/>
+
+        <Label fx:id="mainLabel"/>
+
+        <VBox spacing="5">
+            <Label fx:id="labelAttack" text="Attack"/>
+            <HBox spacing="10">
+                <Button fx:id="attack1"/>
+                <Button fx:id="attack2"/>
+                <Button fx:id="attack3"/>
+                <Button fx:id="attack4"/>
+            </HBox>
+        </VBox>
+
+        <VBox spacing="5">
+            <Label fx:id="labelSwitch" text="Switch"/>
+            <HBox spacing="10">
+                <Button fx:id="pokemon1"/>
+                <Button fx:id="pokemon2"/>
+                <Button fx:id="pokemon3"/>
+            </HBox>
+        </VBox>
+
+    </VBox>
+
+</HBox>
