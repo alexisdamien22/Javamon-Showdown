@@ -1,0 +1,11 @@
+{
+    "java.project.referencedLibraries": [
+        "C:/Program Files/javafx-sdk-21.0.10/lib/*.jar",
+        "lib/mysql-connector-j-9.6.0.jar"
+    ],
+    "java.project.sourcePaths": [
+        "src/main/java",
+        "src/main/resources",
+    ],
+    "java.project.outputPath": "bin" 
+}
