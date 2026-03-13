@@ -19,7 +19,6 @@ public class PokemonManager extends AbstractManager {
         while (rsPokemons.next()) {
             System.out.println("Pokemon Name: " + rsPokemons.getString("Name"));
             
-            // Collect types for this Pokemon
             List<Integer> typeList = new ArrayList<>();
             PreparedStatement stmttypes = connection.prepareStatement("SELECT TypeId FROM pokemontypes WHERE PokemonId = ?");
             stmttypes.setInt(1, rsPokemons.getInt("Id"));
@@ -49,5 +48,43 @@ public class PokemonManager extends AbstractManager {
         stmtpokemons.close();
         
         return pokemonList.toArray(new Pokemon[0]);
+    }
+
+    public Pokemon findOneByName(String name) throws SQLException {
+        Pokemon pokemon = null;
+        PreparedStatement stmtpokemons = connection.prepareStatement("SELECT * FROM pokemons WHERE Name = ?");
+        stmtpokemons.setString(1, name);    
+        ResultSet rsPokemons = stmtpokemons.executeQuery();
+        if (rsPokemons.next()) {
+            System.out.println("Pokemon Name: " + rsPokemons.getString("Name"));
+            
+            List<Integer> typeList = new ArrayList<>();
+            PreparedStatement stmttypes = connection.prepareStatement("SELECT TypeId FROM pokemontypes WHERE PokemonId = ?");
+            stmttypes.setInt(1, rsPokemons.getInt("Id"));
+            ResultSet rsTypes = stmttypes.executeQuery();
+            while (rsTypes.next()) {
+                typeList.add(rsTypes.getInt("TypeId"));
+            }
+            rsTypes.close();
+            stmttypes.close();
+            
+            int[] types = typeList.stream().mapToInt(i -> i).toArray();
+            
+            pokemon = new Pokemon(
+                rsPokemons.getInt("Id"),
+                rsPokemons.getString("Name"),
+                types,
+                rsPokemons.getInt("Hp"),
+                rsPokemons.getInt("Atk"),
+                rsPokemons.getInt("Def"),
+                rsPokemons.getInt("AtkSpe"),
+                rsPokemons.getInt("DefSpe"),
+                rsPokemons.getInt("Speed")
+            );
+        }
+        rsPokemons.close();
+        stmtpokemons.close();
+        
+        return pokemon;
     }
 }
