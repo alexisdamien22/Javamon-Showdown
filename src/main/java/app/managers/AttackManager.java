@@ -20,19 +20,7 @@ public class AttackManager extends AbstractManager {
         ResultSet rs = stmt.executeQuery();
 
         while (rs.next()) {
-
-            Attack attack = new Attack(
-                rs.getInt("Id"),
-                rs.getString("Name"),
-                rs.getString("Description"),
-                rs.getInt("TypeId"),
-                rs.getInt("PP"),
-                rs.getString("Class"),
-                rs.getInt("Power"),
-                rs.getInt("Precision")
-            );
-
-            attackList.add(attack);
+            attackList.add(mapAttack(rs));
         }
 
         rs.close();
@@ -50,22 +38,65 @@ public class AttackManager extends AbstractManager {
         ResultSet rs = stmt.executeQuery();
 
         if (rs.next()) {
-
-            attack = new Attack(
-                rs.getInt("Id"),
-                rs.getString("Name"),
-                rs.getString("Description"),
-                rs.getInt("TypeId"),
-                rs.getInt("PP"),
-                rs.getString("Class"),
-                rs.getInt("Power"),
-                rs.getInt("Precision")
-            );
+            attack = mapAttack(rs);
         }
 
         rs.close();
         stmt.close();
 
         return attack;
+    }
+
+    public ArrayList<Attack> findByPokemonId(int pokemonId) throws SQLException {
+        ArrayList<Attack> list = new ArrayList<>();
+
+        PreparedStatement stmt = connection.prepareStatement(
+            "SELECT * FROM attacks WHERE PokemonId = ?"
+        );
+        stmt.setInt(1, pokemonId);
+
+        ResultSet rs = stmt.executeQuery();
+
+        while (rs.next()) {
+            list.add(mapAttack(rs));
+        }
+
+        rs.close();
+        stmt.close();
+
+        return list;
+    }
+
+    public ArrayList<Attack> findByTypeId(int typeId) throws SQLException {
+        ArrayList<Attack> list = new ArrayList<>();
+
+        PreparedStatement stmt = connection.prepareStatement(
+            "SELECT * FROM attacks WHERE TypeId = ?"
+        );
+        stmt.setInt(1, typeId);
+
+        ResultSet rs = stmt.executeQuery();
+
+        while (rs.next()) {
+            list.add(mapAttack(rs));
+        }
+
+        rs.close();
+        stmt.close();
+
+        return list;
+    }
+
+    private Attack mapAttack(ResultSet rs) throws SQLException {
+        return new Attack(
+            rs.getInt("Id"),
+            rs.getString("Name"),
+            rs.getString("Description"),
+            rs.getInt("TypeId"),
+            rs.getInt("PP"),
+            rs.getString("Class"),
+            rs.getObject("Power") != null ? rs.getInt("Power") : null,
+            rs.getObject("Precision") != null ? rs.getInt("Precision") : null
+        );
     }
 }
