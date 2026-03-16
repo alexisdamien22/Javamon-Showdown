@@ -96,7 +96,8 @@ public class AttackManager extends AbstractManager {
             rs.getInt("PP"),
             rs.getString("Class"),
             rs.getObject("Power") != null ? rs.getInt("Power") : null,
-            rs.getObject("Precision") != null ? rs.getInt("Precision") : null
+            rs.getObject("Precision") != null ? rs.getInt("Precision") : null,
+            rs.getInt("Priority")
         );
     }
 }

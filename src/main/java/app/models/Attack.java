@@ -8,10 +8,11 @@ public class Attack {
     private int typeId;
     private int pp;
     private String attackClass; // Physical / Special / Status
-    private int power;
+    private Integer power;
     private int precision;
+    private int priority;
 
-    public Attack(int id, String name, String description, int typeId, int pp, String attackClass, int power, int precision) {
+    public Attack(int id, String name, String description, int typeId, int pp, String attackClass, int power, int precision, int priority) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -20,6 +21,7 @@ public class Attack {
         this.attackClass = attackClass;
         this.power = power;
         this.precision = precision;
+        this.priority = priority;
     }
 
     public int getId() { return id; }
@@ -28,10 +30,32 @@ public class Attack {
     public int getTypeId() { return typeId; }
     public int getPp() { return pp; }
     public String getAttackClass() { return attackClass; }
-    public int getPower() { return power; }
+    public Integer getPower() { return power; }
     public int getPrecision() { return precision; }
+    public int getPriority() { return priority; }
 
     public void setPp(int pp) { this.pp = pp; }
+
+    public boolean isPhysical(){
+        if(this.attackClass == "Phys."){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isSpecial(){
+        if(this.attackClass == "Spéc."){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isOther(){
+        if(this.attackClass == "Autre"){
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public String toString() {
