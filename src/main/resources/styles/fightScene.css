@@ -1,0 +1,158 @@
+/* ===========================
+   GLOBAL LAYOUT
+   =========================== */
+
+.root-container {
+    -fx-background-color: #1e1e1e;
+    -fx-padding: 20;
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 14px;
+}
+
+.main-column {
+    -fx-alignment: center;
+}
+
+/* ===========================
+   CANVAS
+   =========================== */
+
+.battle-canvas {
+    -fx-border-color: #444;
+    -fx-border-width: 2;
+    -fx-border-radius: 4;
+    -fx-background-color: #000;
+}
+
+/* ===========================
+   LABELS
+   =========================== */
+
+.main-label {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.section-title {
+    -fx-text-fill: #d0d0d0;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+/* ===========================
+   ATTACK / SWITCH BUTTONS
+   =========================== */
+
+.attack-button,
+.switch-button {
+    -fx-background-color: #2a2a2a;
+    -fx-text-fill: #ffffff;
+    -fx-padding: 8 16;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: #555;
+    -fx-border-width: 2;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-min-width: 140;
+}
+
+.attack-button:hover,
+.switch-button:hover {
+    -fx-background-color: #3a3a3a;
+    -fx-border-color: #888;
+}
+
+.attack-button:pressed,
+.switch-button:pressed {
+    -fx-background-color: #1e1e1e;
+    -fx-translate-y: 1;
+}
+
+/* Contenu interne des boutons d’attaque */
+
+.attack-content {
+    -fx-spacing: 2;
+    -fx-alignment: center;
+}
+
+.attack-name {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.attack-type {
+    -fx-text-fill: #d0d0d0;
+    -fx-font-size: 12px;
+}
+
+.attack-pp {
+    -fx-text-fill: #e0e0e0;
+    -fx-font-size: 12px;
+}
+
+/* ===========================
+   TYPE COLORS (modulaire)
+   =========================== */
+
+.type-fire {
+    -fx-background-color: linear-gradient(#ff7a4b, #d64a1f);
+    -fx-border-color: #b33a17;
+}
+
+.type-water {
+    -fx-background-color: linear-gradient(#4ba3ff, #1f6ed6);
+    -fx-border-color: #174eb3;
+}
+
+.type-grass {
+    -fx-background-color: linear-gradient(#6bd66b, #3fa83f);
+    -fx-border-color: #2f7a2f;
+}
+
+.type-flying {
+    -fx-background-color: linear-gradient(#a8c0ff, #6f87d6);
+    -fx-border-color: #4f63b3;
+}
+
+.type-normal {
+    -fx-background-color: linear-gradient(#d6d6d6, #b0b0b0);
+    -fx-border-color: #8a8a8a;
+}
+
+/* ===========================
+   LAYOUT HELPERS
+   =========================== */
+
+.action-block {
+    -fx-padding: 5 0 0 0;
+}
+
+.button-row {
+    -fx-alignment: center-left;
+}
+
+/* ===========================
+   BATTLE LOG
+   =========================== */
+
+.log-scroll {
+    -fx-pref-width: 320;
+    -fx-max-height: 450;
+    -fx-background-color: transparent;
+    -fx-padding: 10;
+}
+
+.log-container {
+    -fx-background-color: #111;
+    -fx-background-radius: 8;
+    -fx-padding: 10;
+    -fx-spacing: 6;
+}
+
+.log-line {
+    -fx-text-fill: #e0e0e0;
+    -fx-font-size: 13px;
+}

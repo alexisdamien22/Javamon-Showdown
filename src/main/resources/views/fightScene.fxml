@@ -1,42 +1,112 @@
 <?xml version="1.0" encoding="UTF-8"?>
- 
+
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.canvas.Canvas?>
- 
+
 <HBox xmlns="http://javafx.com/javafx/17"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="app.Controller"
       alignment="CENTER"
-      spacing="20">
+      spacing="20"
+      styleClass="root-container"
+      stylesheets="@../styles/fightScene.css">
 
-    <VBox spacing="10">
+    <!-- ===========================
+         COLONNE GAUCHE : COMBAT
+         =========================== -->
+    <VBox spacing="10" styleClass="main-column">
 
-        <Canvas fx:id="canvas" width="400" height="300"/>
+        <Canvas fx:id="canvas"
+                width="400"
+                height="300"
+                styleClass="battle-canvas"/>
 
-        <Label fx:id="mainLabel"/>
+        <Label fx:id="mainLabel"
+               styleClass="main-label"/>
 
-        <VBox spacing="5">
-            <Label fx:id="labelAttack" text="Attack"/>
-            <HBox spacing="10">
-                <Button fx:id="attack1"/>
-                <Button fx:id="attack2"/>
-                <Button fx:id="attack3"/>
-                <Button fx:id="attack4"/>
+        <!-- ======= ATTACKS ======= -->
+        <VBox spacing="5" styleClass="action-block">
+            <Label fx:id="labelAttack"
+                   text="Attack"
+                   styleClass="section-title"/>
+
+            <HBox spacing="10" styleClass="button-row">
+
+                <!-- Attack 1 -->
+                <Button fx:id="attack1" styleClass="attack-button" text="">
+                    <graphic>
+                        <VBox alignment="CENTER" styleClass="attack-content">
+                            <Label text="Attack 1" styleClass="attack-name"/>
+                            <Label text="Type" styleClass="attack-type"/>
+                            <Label text="0/0" styleClass="attack-pp"/>
+                        </VBox>
+                    </graphic>
+                </Button>
+
+                <!-- Attack 2 -->
+                <Button fx:id="attack2" styleClass="attack-button" text="">
+                    <graphic>
+                        <VBox alignment="CENTER" styleClass="attack-content">
+                            <Label text="Attack 2" styleClass="attack-name"/>
+                            <Label text="Type" styleClass="attack-type"/>
+                            <Label text="0/0" styleClass="attack-pp"/>
+                        </VBox>
+                    </graphic>
+                </Button>
+
+                <!-- Attack 3 -->
+                <Button fx:id="attack3" styleClass="attack-button" text="">
+                    <graphic>
+                        <VBox alignment="CENTER" styleClass="attack-content">
+                            <Label text="Attack 3" styleClass="attack-name"/>
+                            <Label text="Type" styleClass="attack-type"/>
+                            <Label text="0/0" styleClass="attack-pp"/>
+                        </VBox>
+                    </graphic>
+                </Button>
+
+                <!-- Attack 4 -->
+                <Button fx:id="attack4" styleClass="attack-button" text="">
+                    <graphic>
+                        <VBox alignment="CENTER" styleClass="attack-content">
+                            <Label text="Attack 4" styleClass="attack-name"/>
+                            <Label text="Type" styleClass="attack-type"/>
+                            <Label text="0/0" styleClass="attack-pp"/>
+                        </VBox>
+                    </graphic>
+                </Button>
+
             </HBox>
         </VBox>
 
-        <VBox spacing="5">
-            <Label fx:id="labelSwitch" text="Switch"/>
-            <HBox spacing="10">
-                <Button fx:id="pokemon1"/>
-                <Button fx:id="pokemon2"/>
-                <Button fx:id="pokemon3"/>
+        <!-- ======= SWITCH ======= -->
+        <VBox spacing="5" styleClass="action-block">
+            <Label fx:id="labelSwitch"
+                   text="Switch"
+                   styleClass="section-title"/>
+
+            <HBox spacing="10" styleClass="button-row">
+
+                <Button fx:id="pokemon1" styleClass="switch-button" text="Slot 1"/>
+                <Button fx:id="pokemon2" styleClass="switch-button" text="Slot 2"/>
+                <Button fx:id="pokemon3" styleClass="switch-button" text="Slot 3"/>
+
             </HBox>
         </VBox>
 
     </VBox>
+
+    <!-- ===========================
+         COLONNE DROITE : LOG
+         =========================== -->
+    <ScrollPane fx:id="logScroll"
+                fitToWidth="true"
+                styleClass="log-scroll">
+        <VBox fx:id="logContainer"
+              spacing="6"
+              styleClass="log-container"/>
+    </ScrollPane>
 
 </HBox>

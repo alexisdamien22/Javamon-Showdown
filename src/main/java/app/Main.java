@@ -8,10 +8,10 @@ import javafx.stage.Stage;
 public class Main extends Application { 
     @Override 
     public void start(Stage stage) throws Exception { 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/layout.fxml")); 
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/fightScene.fxml")); 
         Scene scene = new Scene(loader.load()); 
         stage.setScene(scene); 
-        stage.setTitle("Mon Application JavaFX"); 
+        stage.setTitle("Javamon Showdown"); 
         stage.show(); 
     } 
  
