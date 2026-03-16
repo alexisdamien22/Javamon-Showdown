@@ -15,7 +15,7 @@ public class Battler {
         return base.getName();
     }
 
-    public int[] getTypes() {
+    public Type[] getTypes() {
         return base.getTypes();
     }
 

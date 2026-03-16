@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.?>
+<?import javafx.scene.layout.?>
+<?import java.net.URL?>
+
+<HBox prefHeight="850.0"
+    prefWidth="1250.0"
+    xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="app.controllers.TeamManagementController">
+    <stylesheets>
+        <URL value="@../styles/teamManagement.css" />
+    </stylesheets>
+    <children>
+        <VBox minWidth="320" spacing="25" styleClass="sidebar">
+            <Label text="JAVAMON DB" style="-fx-text-fill: #3b82f6; -fx-font-size: 24; -fx-font-weight: bold;" />
+
+            <VBox spacing="10">
+                <Label text="SLOT 1" style="-fx-text-fill: white;" />
+                <ComboBox fx:id="cb1" maxWidth="Infinity" />
+                <CheckBox fx:id="lock1" text="Verrouiller" disable="true" style="-fx-text-fill: white;" />
+            </VBox>
+
+            <VBox spacing="10">
+                <Label text="SLOT 2" style="-fx-text-fill: white;" />
+                <ComboBox fx:id="cb2" maxWidth="Infinity" />
+                <CheckBox fx:id="lock2" text="Verrouiller" disable="true" style="-fx-text-fill: white;" />
+            </VBox>
+
+            <VBox spacing="10">
+                <Label text="SLOT 3" style="-fx-text-fill: white;" />
+                <ComboBox fx:id="cb3" maxWidth="Infinity" />
+                <CheckBox fx:id="lock3" text="Verrouiller" disable="true" style="-fx-text-fill: white;" />
+            </VBox>
+
+            <Region VBox.vgrow="ALWAYS" />
+            <Button fx:id="btnValidate" onAction="#handleValidate" text="VALIDER ÉQUIPE" disable="true" maxWidth="Infinity" styleClass="btn-validate" style="-fx-padding: 15;" />
+        </VBox>
+        <StackPane fx:id="displayArea" HBox.hgrow="ALWAYS" />
+    </children>
+</HBox>

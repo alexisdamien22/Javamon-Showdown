@@ -1,0 +1,60 @@
+/* Sidebar /
+.sidebar {
+    -fx-background-color: #111315;
+    -fx-padding: 30;
+}
+
+/ Type badges (header of pokemon page) /
+.type-badge {
+    -fx-text-fill: white;
+    -fx-padding: 5 15;
+    -fx-background-radius: 15;
+    -fx-font-weight: bold;
+    -fx-font-size: 14;
+}
+
+/ Radar chart container /
+.radar-pane {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-padding: 25;
+}
+
+/ Radar stat labels /
+.radar-label {
+    -fx-font-size: 11;
+    -fx-font-weight: bold;
+    -fx-text-fill: #475569;
+}
+
+/ Fallback fill for radar polygon
+   (used only if Color.web() throws in Java) /
+.radar-poly-fill {
+    -fx-fill: rgba(59, 130, 246, 0.4);
+    -fx-stroke: #3b82f6;
+    -fx-stroke-width: 2;
+}
+
+/ Info cards /
+.card-white {
+    -fx-background-color: rgba(255, 255, 255, 0.9);
+    -fx-background-radius: 15;
+    -fx-padding: 20;
+}
+
+.card-dark {
+    -fx-background-color: #1e293b;
+    -fx-background-radius: 15;
+    -fx-padding: 20;
+}
+
+/ Validate button */
+.btn-validate {
+    -fx-background-color: #3b82f6;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.btn-validate:disabled {
+    -fx-opacity: 0.3;
+}

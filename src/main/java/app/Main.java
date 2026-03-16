@@ -13,6 +13,16 @@ import javafx.stage.Stage;
 public class Main extends Application { 
     @Override 
     public void start(Stage stage) throws Exception { 
+        FXMLLoader loader = new FXMLLoader(
+                getClass().getResource("/views/teamManagement.fxml")
+        );
+        Scene scene = new Scene(loader.load(), 1200, 800);
+        stage.setTitle("Javamon Lab - Gestion d'équipe");
+        stage.setScene(scene);
+        stage.show();
+    } 
+
+    public void fightscene(Stage stage) throws Exception {
         // ============================
         // 1. CHARGEMENT DES POKÉMONS SQL
         // ============================
@@ -47,8 +57,7 @@ public class Main extends Application {
 
         stage.setScene(new Scene(root));
         stage.show();
-
-    } 
+    }
  
     public static void main(String[] args) { 
         launch(); 

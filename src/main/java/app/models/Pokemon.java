@@ -4,15 +4,17 @@ public class Pokemon {
     private int id;
     private int combatId;
     private String name;
-    private int[] types;
+    private Type[] types;
     private int hp;
     private int attack;
+    private String desc;
+    private String lore;
     private int defense;
     private int AtkSp;
     private int DefSp;
     private int speed;
 
-    public Pokemon(int id, String name, int[] types, int hp, int attack, int defense, int AtkSp, int DefSp, int speed) {
+    public Pokemon(int id, String name, Type[] types, int hp, int attack, int defense, int AtkSp, int DefSp, int speed, String desc, String lore) {
         this.id = id;
         this.name = name;
         this.types = types;
@@ -22,6 +24,8 @@ public class Pokemon {
         this.AtkSp = AtkSp;
         this.DefSp = DefSp;
         this.speed = speed;
+        this.desc = desc;
+        this.lore = lore;
     }
 
     public void setCombatId(int combatId) { this.combatId = combatId; }
@@ -30,11 +34,13 @@ public class Pokemon {
     public int getId() { return id; }
     public int getCombatId() { return combatId; }
     public String getName() { return name; }
-    public int[] getTypes() { return types; }
+    public Type[] getTypes() { return types; }
     public int getHp() { return hp; }
     public int getAttack() { return attack; }
     public int getDefense() { return defense; }
     public int getAtkSp() { return AtkSp; }
     public int getDefSp() { return DefSp; }
     public int getSpeed() { return speed; }
+    public String getDesc() { return desc; }
+    public String getLore() { return lore; }
 }
