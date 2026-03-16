@@ -9,10 +9,10 @@ public class Attack {
     private int pp;
     private String attackClass; // Physical / Special / Status
     private Integer power;
-    private int precision;
+    private Integer precision;
     private int priority;
 
-    public Attack(int id, String name, String description, int typeId, int pp, String attackClass, int power, int precision, int priority) {
+    public Attack(int id, String name, String description, int typeId, int pp, String attackClass, Integer power, Integer precision, int priority) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -31,7 +31,7 @@ public class Attack {
     public int getPp() { return pp; }
     public String getAttackClass() { return attackClass; }
     public Integer getPower() { return power; }
-    public int getPrecision() { return precision; }
+    public Integer getPrecision() { return precision; }
     public int getPriority() { return priority; }
 
     public void setPp(int pp) { this.pp = pp; }

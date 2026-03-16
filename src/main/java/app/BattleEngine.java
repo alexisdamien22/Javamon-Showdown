@@ -82,12 +82,24 @@ public class BattleEngine {
 
         if (attack == null) return;
 
-        result.addLog(attacker.getName() + " utilise " + attack.getName() + " !");
+        // Log attaque
+        result.add(BattleLogEntry.Type.ATTACK,
+                attacker.getName() + " utilise " + attack.getName() + " !");
 
+        // Calcul dégâts
         int damage = calculator.compute(attacker, defender, attack);
 
+        // Log dégâts
+        result.add(BattleLogEntry.Type.DAMAGE,
+                defender.getName() + " perd " + damage + " PV !");
+
+        // Appliquer dégâts
         defender.takeDamage(damage);
 
-        result.addLog(defender.getName() + " perd " + damage + " PV !");
+        // Log KO
+        if (defender.isKO()) {
+            result.add(BattleLogEntry.Type.KO,
+                    defender.getName() + " est K.O. !");
+        }
     }
 }

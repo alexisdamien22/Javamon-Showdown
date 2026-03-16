@@ -7,7 +7,7 @@
 
 <HBox xmlns="http://javafx.com/javafx/17"
       xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="app.Controller"
+      fx:controller="app.controllers.FightController"
       alignment="CENTER"
       spacing="20"
       styleClass="root-container"
@@ -35,45 +35,45 @@
             <HBox spacing="10" styleClass="button-row">
 
                 <!-- Attack 1 -->
-                <Button fx:id="attack1" styleClass="attack-button" text="">
+                <Button fx:id="attackBtn1" styleClass="attack-button" text="">
                     <graphic>
                         <VBox alignment="CENTER" styleClass="attack-content">
-                            <Label text="Attack 1" styleClass="attack-name"/>
-                            <Label text="Type" styleClass="attack-type"/>
-                            <Label text="0/0" styleClass="attack-pp"/>
+                            <Label styleClass="attack-name"/>
+                            <Label styleClass="attack-type"/>
+                            <Label styleClass="attack-pp"/>
                         </VBox>
                     </graphic>
                 </Button>
 
                 <!-- Attack 2 -->
-                <Button fx:id="attack2" styleClass="attack-button" text="">
+                <Button fx:id="attackBtn2" styleClass="attack-button" text="">
                     <graphic>
                         <VBox alignment="CENTER" styleClass="attack-content">
-                            <Label text="Attack 2" styleClass="attack-name"/>
-                            <Label text="Type" styleClass="attack-type"/>
-                            <Label text="0/0" styleClass="attack-pp"/>
+                            <Label styleClass="attack-name"/>
+                            <Label styleClass="attack-type"/>
+                            <Label styleClass="attack-pp"/>
                         </VBox>
                     </graphic>
                 </Button>
 
                 <!-- Attack 3 -->
-                <Button fx:id="attack3" styleClass="attack-button" text="">
+                <Button fx:id="attackBtn3" styleClass="attack-button" text="">
                     <graphic>
                         <VBox alignment="CENTER" styleClass="attack-content">
-                            <Label text="Attack 3" styleClass="attack-name"/>
-                            <Label text="Type" styleClass="attack-type"/>
-                            <Label text="0/0" styleClass="attack-pp"/>
+                            <Label styleClass="attack-name"/>
+                            <Label styleClass="attack-type"/>
+                            <Label styleClass="attack-pp"/>
                         </VBox>
                     </graphic>
                 </Button>
 
                 <!-- Attack 4 -->
-                <Button fx:id="attack4" styleClass="attack-button" text="">
+                <Button fx:id="attackBtn4" styleClass="attack-button" text="">
                     <graphic>
                         <VBox alignment="CENTER" styleClass="attack-content">
-                            <Label text="Attack 4" styleClass="attack-name"/>
-                            <Label text="Type" styleClass="attack-type"/>
-                            <Label text="0/0" styleClass="attack-pp"/>
+                            <Label styleClass="attack-name"/>
+                            <Label styleClass="attack-type"/>
+                            <Label styleClass="attack-pp"/>
                         </VBox>
                     </graphic>
                 </Button>

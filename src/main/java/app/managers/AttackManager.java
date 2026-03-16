@@ -90,7 +90,7 @@ public class AttackManager extends AbstractManager {
     private Attack mapAttack(ResultSet rs) throws SQLException {
         return new Attack(
             rs.getInt("Id"),
-            rs.getString("Name"),
+            rs.getString("NameFR"),
             rs.getString("Description"),
             rs.getInt("TypeId"),
             rs.getInt("PP"),

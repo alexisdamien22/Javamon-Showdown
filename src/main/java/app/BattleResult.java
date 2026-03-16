@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BattleResult {
-
-    private List<String> logs = new ArrayList<>();
+    private final List<BattleLogEntry> logs = new ArrayList<>();
     private String winner = null;
 
-    public void addLog(String msg) {
-        logs.add(msg);
+    public void add(BattleLogEntry.Type type, String msg) {
+        logs.add(new BattleLogEntry(type, msg));
     }
 
-    public List<String> getLogs() {
+    public List<BattleLogEntry> getLogs() {
         return logs;
     }
+
 
     public void setWinner(String w) {
         this.winner = w;

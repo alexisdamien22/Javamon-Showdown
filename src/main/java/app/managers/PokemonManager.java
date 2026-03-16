@@ -87,4 +87,42 @@ public class PokemonManager extends AbstractManager {
         
         return pokemon;
     }
+
+    public Pokemon findOneById(int id) throws SQLException {
+        Pokemon pokemon = null;
+        PreparedStatement stmtpokemons = connection.prepareStatement("SELECT * FROM pokemons WHERE Id = ?");
+        stmtpokemons.setInt(1, id);    
+        ResultSet rsPokemons = stmtpokemons.executeQuery();
+        if (rsPokemons.next()) {
+            System.out.println("Pokemon Name: " + rsPokemons.getString("Name"));
+            
+            List<Integer> typeList = new ArrayList<>();
+            PreparedStatement stmttypes = connection.prepareStatement("SELECT TypeId FROM pokemontypes WHERE PokemonId = ?");
+            stmttypes.setInt(1, rsPokemons.getInt("Id"));
+            ResultSet rsTypes = stmttypes.executeQuery();
+            while (rsTypes.next()) {
+                typeList.add(rsTypes.getInt("TypeId"));
+            }
+            rsTypes.close();
+            stmttypes.close();
+            
+            int[] types = typeList.stream().mapToInt(i -> i).toArray();
+            
+            pokemon = new Pokemon(
+                rsPokemons.getInt("Id"),
+                rsPokemons.getString("Name"),
+                types,
+                rsPokemons.getInt("Hp"),
+                rsPokemons.getInt("Atk"),
+                rsPokemons.getInt("Def"),
+                rsPokemons.getInt("AtkSpe"),
+                rsPokemons.getInt("DefSpe"),
+                rsPokemons.getInt("Speed")
+            );
+        }
+        rsPokemons.close();
+        stmtpokemons.close();
+        
+        return pokemon;
+    }
 }
