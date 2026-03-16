@@ -24,51 +24,17 @@ public class Pokemon {
         this.speed = speed;
     }
 
-    public void setCombatId(int combatId) {
-        this.combatId = combatId;
-    }
+    public void setCombatId(int combatId) { this.combatId = combatId; }
+    public void setHp(int hp) { this.hp = hp; }
 
-    public void setHp(int hp) {
-        this.hp = hp;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public int getCombatId() {
-        return combatId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int[] getTypes() {
-        return types;
-    }
-
-    public int getHp() {
-        return hp;
-    }
-
-    public int getAttack() {
-        return attack;
-    }
-
-    public int getDefense() {
-        return defense;
-    }
-
-    public int getAtkSp() {
-        return AtkSp;
-    }
-
-    public int getDefSp() {
-        return DefSp;
-    }
-
-    public int getSpeed() {
-        return speed;
-    }
+    public int getId() { return id; }
+    public int getCombatId() { return combatId; }
+    public String getName() { return name; }
+    public int[] getTypes() { return types; }
+    public int getHp() { return hp; }
+    public int getAttack() { return attack; }
+    public int getDefense() { return defense; }
+    public int getAtkSp() { return AtkSp; }
+    public int getDefSp() { return DefSp; }
+    public int getSpeed() { return speed; }
 }

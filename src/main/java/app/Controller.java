@@ -1,6 +1,7 @@
 package app;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import app.managers.PokemonManager;
 import app.models.Pokemon;
     
@@ -17,5 +18,12 @@ public class Controller {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    } 
+    }
+
+    public void applyTypeStyle(Button btn, String type) {
+        btn.getStyleClass().removeIf(c -> c.startsWith("type-"));
+
+        btn.getStyleClass().add("type-" + type.toLowerCase());
+    }
+
 } 
