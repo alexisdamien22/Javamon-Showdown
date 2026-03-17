@@ -31,23 +31,23 @@ public class TeamManagementController {
     private boolean isUpdating = false;
 
     private final Map<String, String> typeColors = Map.ofEntries(
-            Map.entry("Insecte",    "#9EE84F"),
-            Map.entry("Tenebres",   "#2D2E28"),
+            Map.entry("Bug",    "#9EE84F"),
+            Map.entry("Dark",   "#2D2E28"),
             Map.entry("Dragon",     "#7946B0"),
-            Map.entry("Electrique", "#F2BA1F"),
-            Map.entry("Fee",        "#FA9DCF"),
-            Map.entry("Combat",     "#4D240B"),
-            Map.entry("Feu",        "#910000"),
-            Map.entry("Vol",        "#6298C4"),
-            Map.entry("Spectre",    "#393166"),
-            Map.entry("Plante",     "#0AA119"),
-            Map.entry("Sol",        "#C79442"),
-            Map.entry("Glace",      "#92C8D1"),
+            Map.entry("Electric", "#F2BA1F"),
+            Map.entry("Fairy",        "#FA9DCF"),
+            Map.entry("Fighting",     "#4D240B"),
+            Map.entry("Fire",        "#910000"),
+            Map.entry("Flying",        "#6298C4"),
+            Map.entry("Ghost",    "#393166"),
+            Map.entry("Grass",     "#0AA119"),
+            Map.entry("Ground",        "#C79442"),
+            Map.entry("Ice",      "#92C8D1"),
             Map.entry("Normal",     "#A6A6A6"),
             Map.entry("Poison",     "#7804CC"),
-            Map.entry("Acier",      "#A6988A"),
-            Map.entry("Eau",        "#1656DB"),
-            Map.entry("Psy",        "#FF6B9D")
+            Map.entry("Steel",      "#A6988A"),
+            Map.entry("Water",        "#1656DB"),
+            Map.entry("Psychic",        "#FF6B9D")
     );
 
     // -------------------------------------------------------------------------
@@ -360,9 +360,17 @@ public class TeamManagementController {
 
     private ImageView buildPokemonImage(Pokemon p) {
         ImageView iv = new ImageView();
-        var stream = getClass()
-                .getResourceAsStream("Images/" + p.getName()+".png");
-        if (stream != null) iv.setImage(new Image(stream));
+        String imageName = p.getName() + "_enemy.png";
+        var stream = getClass().getResourceAsStream("/imgs/" + imageName);
+        if (stream != null) {
+            iv.setImage(new Image(stream));
+        } else {
+            // Optional fallback placeholder if image is missing
+            var placeholder = getClass().getResourceAsStream("/imgs/placeholder.png");
+            if (placeholder != null) {
+                iv.setImage(new Image(placeholder));
+            }
+        }
         iv.setFitWidth(350);
         iv.setPreserveRatio(true);
         return iv;

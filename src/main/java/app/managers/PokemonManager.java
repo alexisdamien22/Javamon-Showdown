@@ -40,8 +40,8 @@ public class PokemonManager extends AbstractManager {
                 rs.getInt("AtkSpe"),
                 rs.getInt("DefSpe"),
                 rs.getInt("Speed"),
-                rs.getString("Description"),
-                rs.getString("Lore")
+                rs.getString("Lore"),
+                rs.getString("Description")
         );
     }
 
