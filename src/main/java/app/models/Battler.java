@@ -20,8 +20,8 @@ public class Battler {
     }
 
     public boolean hasType(int typeId) {
-        for (int t : base.getTypes()) {
-            if (t == typeId) return true;
+        for (Type t : base.getTypes()) {
+            if (t.getId() == typeId) return true;
         }
         return false;
     }

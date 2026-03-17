@@ -14,6 +14,9 @@ import javafx.scene.shape.Polygon;
 import java.util.*;
 
 import app.models.Pokemon;
+import app.models.Type;
+
+import app.managers.PokemonManager;
 
 public class TeamManagementController {
 
@@ -22,7 +25,8 @@ public class TeamManagementController {
     @FXML private StackPane displayArea;
     @FXML private Button btnValidate;
 
-    private final Map<String, Pokemon> pokedex = new HashMap<>();
+    private PokemonManager pokemonManager;
+    private Map<String, Pokemon> pokedex = new HashMap<>();
     // Guard flag: blocks onAction events fired by setItems()/setValue()
     private boolean isUpdating = false;
 
@@ -52,7 +56,17 @@ public class TeamManagementController {
 
     @FXML
     public void initialize() {
-        fillPokedex();
+        try {
+            pokemonManager = new PokemonManager();
+            Pokemon[] pokemons = pokemonManager.findAll();
+            pokedex.clear();
+            for (Pokemon p : pokemons) {
+                pokedex.put(p.getName(), p);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         setupRow(cb1, lock1);
         setupRow(cb2, lock2);
         setupRow(cb3, lock3);
@@ -290,9 +304,9 @@ public class TeamManagementController {
                 : c1;
         VBox container = buildDisplayContainer(c1, c2);
         container.getChildren().addAll(
-                buildHeader(j, types),
-                buildMidSection(j, c1),
-                buildFooter(j)
+                buildHeader(p, types),
+                buildMidSection(p, c1),
+                buildFooter(p)
         );
         displayArea.getChildren().setAll(container);
     }
@@ -310,10 +324,10 @@ public class TeamManagementController {
         return container;
     }
 
-    private HBox buildHeader(Javamon j, String[] types) {
+    private HBox buildHeader(Pokemon p, String[] types) {
         HBox header = new HBox(20);
         header.setAlignment(Pos.CENTER_LEFT);
-        Label lblName = new Label(j.getName().toUpperCase());
+        Label lblName = new Label(p.getName().toUpperCase());
         lblName.setStyle(
                 "-fx-font-size: 50;"
                         + " -fx-font-weight: 900;"
@@ -334,49 +348,49 @@ public class TeamManagementController {
         return badge;
     }
 
-    private HBox buildMidSection(Javamon j, String c1) {
+    private HBox buildMidSection(Pokemon p, String c1) {
         HBox mid = new HBox(50);
         mid.setAlignment(Pos.CENTER);
         mid.getChildren().addAll(
-                buildPokemonImage(j),
-                buildRadarBox(j, c1)
+                buildPokemonImage(p),
+                buildRadarBox(p, c1)
         );
         return mid;
     }
 
-    private ImageView buildPokemonImage(Javamon j) {
+    private ImageView buildPokemonImage(Pokemon p) {
         ImageView iv = new ImageView();
         var stream = getClass()
-                .getResourceAsStream("Images/" + j.getName()+".png");
+                .getResourceAsStream("Images/" + p.getName()+".png");
         if (stream != null) iv.setImage(new Image(stream));
         iv.setFitWidth(350);
         iv.setPreserveRatio(true);
         return iv;
     }
 
-    private VBox buildRadarBox(Javamon j, String c1) {
+    private VBox buildRadarBox(Pokemon p, String c1) {
         Label radarTitle = new Label("Statistiques");
         radarTitle.setStyle(
                 "-fx-font-weight: bold;"
                         + " -fx-font-size: 15;"
                         + " -fx-text-fill: #1e293b;"
         );
-        VBox box = new VBox(10, radarTitle, drawRadar(j, c1));
+        VBox box = new VBox(10, radarTitle, drawRadar(p, c1));
         box.getStyleClass().add("radar-pane");
         box.setAlignment(Pos.CENTER);
         return box;
     }
 
-    private HBox buildFooter(Javamon j) {
+    private HBox buildFooter(Pokemon p) {
         HBox footer = new HBox(30);
         footer.setAlignment(Pos.CENTER);
         footer.getChildren().addAll(
                 createCard(
-                        "Description", j.getDescription(),
+                        "Description", p.getDesc(),
                         "card-white", "#1e293b"
                 ),
                 createCard(
-                        "Lore", j.getLore(),
+                        "Lore", p.getLore(),
                         "card-dark", "#f8fafc"
                 )
         );
@@ -406,17 +420,17 @@ public class TeamManagementController {
     // -------------------------------------------------------------------------
 
     private Pane drawRadar(Pokemon p, String typeColor) {
-        Pane p = new Pane();
-        p.setMinSize(260, 260);
+        Pane pane = new Pane();
+        pane.setMinSize(260, 260);
         double center = 130, r = 90;
         int[] stats = {
-                j.getHp(), j.getAtk(), j.getDef(),
-                j.getSpAtk(), j.getSpDef(), j.getSpeed()
+                p.getHp(), p.getAttack(), p.getDefense(),
+                p.getAtkSp(), p.getDefSp(), p.getSpeed()
         };
-        p.getChildren().add(buildHexOutline(center, r));
-        addAxesAndLabels(p, center, r, stats);
-        p.getChildren().add(buildStatPolygon(center, r, stats, typeColor));
-        return p;
+        pane.getChildren().add(buildHexOutline(center, r));
+        addAxesAndLabels(pane, center, r, stats);
+        pane.getChildren().add(buildStatPolygon(center, r, stats, typeColor));
+        return pane;
     }
 
     private Polygon buildHexOutline(double center, double r) {
@@ -516,105 +530,5 @@ public class TeamManagementController {
         } catch (Exception e) {
             return hex;
         }
-    }
-
-    // -------------------------------------------------------------------------
-    // Pokedex data
-    // -------------------------------------------------------------------------
-
-    private void fillPokedex() {
-        addJavamon("Crystalion", "Dragon/Glace", 60, 55, 65, 115, 70, 110,
-                "Ce petit dragon vit dans les grottes de cristal les plus"
-                        + " profondes. Son corps est composé de gemmes semi-précieuses"
-                        + " qui emmagasinent la lumière pour la rejeter sous forme"
-                        + " de rayons laser dévastateurs.",
-                "On dit que si l'un de ses éclats tombe, il repousse en une"
-                        + " semaine. Les mineurs le suivent souvent, car sa présence"
-                        + " indique la proximité de gisements rares.",
-                "Crystalion.png", "#7946B0");
-        addJavamon("Roncigami", "Plante/Normal", 75, 90, 130, 50, 95, 40,
-                "Un Pokémon composé de feuilles rigides pliées comme du papier."
-                        + " Ses bords sont aussi tranchants que des lames de rasoir,"
-                        + " et il se déplace avec une rigidité mécanique.",
-                "Il est né d'une légende racontant qu'un maître en origami"
-                        + " aurait insufflé la vie à ses créations pour protéger son"
-                        + " jardin. Il ne flétrit jamais, même en plein hiver.",
-                "Roncigami.png", "#0AA119");
-        addJavamon("Towltem", "Sol", 100, 60, 85, 105, 140, 10,
-                "Un automate massif dont le buste contient un sablier magique."
-                        + " Il ne bouge presque jamais, mais ses yeux brillent"
-                        + " intensément quand le temps s'écoule.",
-                "On raconte que Towltem peut ralentir les battements de cœur"
-                        + " de ses adversaires en inversant son sablier. Il est le"
-                        + " gardien des ruines oubliées par l'histoire.",
-                "Towltem.png", "#C79442");
-        addJavamon("Rubrasier", "Feu/Spectre", 50, 120, 45, 100, 45, 145,
-                "Un serpent de pure énergie thermique qui ondule dans les airs"
-                        + " comme un ruban de soie en feu. Il ne touche jamais le sol.",
-                "Il est capable de traverser les murs en les faisant fondre"
-                        + " instantanément. Apercevoir un Rubrasier dans le ciel"
-                        + " nocturne est un signe de canicule imminente.",
-                "Rubrasier.png", "#910000");
-        addJavamon("Moustix", "Insecte/Poison", 70, 95, 80, 95, 80, 85,
-                "Un insecte bourdonnant entouré d'un nuage de spores toxiques."
-                        + " Ses yeux multiples lui permettent de détecter les"
-                        + " faiblesses biologiques de ses proies.",
-                "Ce Pokémon prospère dans les milieux pollués. Les orbes verts"
-                        + " sur son dos contiennent un venin capable de paralyser un"
-                        + " Rhino en quelques secondes.",
-                "Moustix.png", "#9EE84F");
-        addJavamon("Orbitacle", "Vol/Tenebres", 85, 40, 80, 125, 110, 75,
-                "Une entité dont la tête ressemble à une planète entourée"
-                        + " d'anneaux de débris spatiaux. Ses tentacules flottent"
-                        + " comme s'ils étaient en apesanteur.",
-                "On pense qu'Orbitacle est tombé des étoiles il y a des"
-                        + " millénaires. Il communique par ondes radio que les humains"
-                        + " captent parfois comme des sifflements.",
-                "Orbitacle.png", "#6298C4");
-        addJavamon("Marietta", "Fee", 65, 45, 70, 105, 125, 80,
-                "Une marionnette rose aux yeux de bouton tenue par des fils"
-                        + " invisibles reliés à une main fantomatique flottant"
-                        + " au-dessus d'elle.",
-                "Bien qu'elle ait l'air inoffensive, c'est elle qui contrôle"
-                        + " la main spectrale. Elle adore égarer les voyageurs"
-                        + " dans la brume.",
-                "Marietta.png", "#FA9DCF");
-        addJavamon("Frimanta", "Glace/Eau", 80, 70, 75, 110, 90, 105,
-                "Une raie majestueuse faite de glace éternelle. Ses ailes"
-                        + " cristallines scintillent et laissent une traînée de"
-                        + " poudreuse givrée.",
-                "Elle survole les océans arctiques en silence. Son chant peut"
-                        + " geler une vague entière, créant des ponts de glace pour"
-                        + " les Pokémon terrestres.",
-                "Frimanta.png", "#92C8D1");
-        addJavamon("Frapphino", "Combat", 115, 140, 110, 20, 65, 60,
-                "Un rhinocéros bipède massif portant des gants de boxe naturels"
-                        + " et une ceinture de champion. Son regard exprime une"
-                        + " détermination sans faille.",
-                "Il s'entraîne en percutant des falaises jusqu'à les pulvériser."
-                        + " Il préfère finir ses combats par un enchaînement de"
-                        + " directs foudroyants.",
-                "Frapphino.png", "#4D240B");
-        addJavamon("Surivolt", "Acier/Electrique", 65, 110, 75, 95, 90, 120,
-                "Un suricate cyborg dont la colonne vertébrale est équipée de"
-                        + " bobines Tesla. Ses oreilles captent les signaux électriques"
-                        + " à des kilomètres à la ronde.",
-                "Créé pour surveiller les centrales électriques, Surivolt a"
-                        + " fini par retourner à l'état sauvage. Il se recharge au"
-                        + " sommet des collines pendant les orages.",
-                "Surivolt.png", "#A6988A");
-    }
-
-    private void addJavamon(
-            String name, String type,
-            int hp, int atk, int def,
-            int spAtk, int spDef, int speed,
-            String desc, String lore,
-            String img, String color) {
-        pokedex.put(name, new Javamon(
-                name, type, hp, atk, def,
-                spAtk, spDef, speed,
-                desc, lore, img, color
-        ));
     }
 }
