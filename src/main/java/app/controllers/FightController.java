@@ -4,10 +4,10 @@ import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
 import app.models.Attack;
 import app.models.Battler;
+import app.models.Pokemon;
 import app.managers.AttackManager;
 import app.managers.TypeEffectivenessManager;
 import app.BattleEngine;
@@ -18,6 +18,10 @@ import app.BattleResult;
 import java.util.ArrayList;
 
 public class FightController {
+
+    private int turn = 1;
+
+    private boolean playerForcedToSwitch = false;
 
     @FXML private Button attackBtn1;
     @FXML private Button attackBtn2;
@@ -58,6 +62,8 @@ public class FightController {
 
             setAttackButtons();
 
+            updateSwitchButtons();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -70,6 +76,22 @@ public class FightController {
         fillAttackButton(attackBtn4, playerAttacks.get(3));
     }
 
+    private void disableAttackButtons() {
+        attackBtn1.setDisable(true);
+        attackBtn2.setDisable(true);
+        attackBtn3.setDisable(true);
+        attackBtn4.setDisable(true);
+    }
+
+    private void enableAttackButtons() {
+        attackBtn1.setDisable(false);
+        attackBtn2.setDisable(false);
+        attackBtn3.setDisable(false);
+        attackBtn4.setDisable(false);
+    }
+
+
+
     private void fillAttackButton(Button button, Attack attack) {
 
         VBox box = (VBox) button.getGraphic();
@@ -79,8 +101,14 @@ public class FightController {
         Label ppLabel   = (Label) box.getChildren().get(2);
 
         nameLabel.setText(attack.getName());
-        typeLabel.setText(getTypeName(attack.getTypeId()));
+        typeLabel.setText(getTypeName(attack.getType().getId()));
         ppLabel.setText(attack.getPp() + "/" + attack.getPp());
+
+        button.getStyleClass().removeIf(c -> c.startsWith("type-"));
+
+        String cssType = "type-" + attack.getType().getName().toLowerCase();
+        cssType = cssType.replace("é", "e").replace("è", "e");
+        button.getStyleClass().add(cssType);
     }
 
     private String getTypeName(int typeId) {
@@ -121,6 +149,9 @@ public class FightController {
 
     private void executeAttack(Attack chosenAttack) {
 
+        addLog(new BattleLogEntry(BattleLogEntry.Type.INFO, "=== Tour " + turn + " ==="));
+        turn++;
+
         // IA ennemie simple : attaque aléatoire
         Attack enemyAttack = enemyAttacks.get((int)(Math.random() * enemyAttacks.size()));
 
@@ -132,8 +163,18 @@ public class FightController {
 
         if (result.hasWinner()) {
             addLog(new BattleLogEntry(BattleLogEntry.Type.INFO, result.getWinner() + " a gagné !"));
-            disableButtons();
+            disableAttackButtons();
+            return;
         }
+
+        if (result.mustForceSwitch()) {
+            playerForcedToSwitch = true;
+            disableAttackButtons();
+            updateSwitchButtons();
+            return;
+        }
+        
+        updateSwitchButtons();
     }
 
     private void updateLog(BattleResult result) {
@@ -158,13 +199,6 @@ public class FightController {
         logContainer.getChildren().add(label);
     }
 
-    private void disableButtons() {
-        attackBtn1.setDisable(true);
-        attackBtn2.setDisable(true);
-        attackBtn3.setDisable(true);
-        attackBtn4.setDisable(true);
-    }
-
     public void setPlayer(Battler player) {
         this.player = player;
     }
@@ -172,4 +206,106 @@ public class FightController {
     public void setEnemy(Battler enemy) {
         this.enemy = enemy;
     }
+
+    @FXML private Button pokemon1;
+    @FXML private Button pokemon2;
+    @FXML private Button pokemon3;
+
+    private void switchPokemon(int index) {
+
+        // Impossible de switch sur KO ou actif
+        if (player.isKO(index) || index == player.getActiveIndex()) return;
+
+        // Switch effectif
+        player.switchTo(index);
+
+        try {
+            AttackManager attackManager = new AttackManager();
+            playerAttacks = attackManager.findByPokemonId(player.getBase().getId());
+            setAttackButtons();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
+        addLog(new BattleLogEntry(
+            BattleLogEntry.Type.STATUS,
+            "Vous envoyez " + player.getBase().getName() + " !"
+        ));
+
+        renderer.render(player, enemy);
+        updateSwitchButtons();
+
+        // --- SWITCH FORCÉ (après KO) ---
+        if (playerForcedToSwitch) {
+            playerForcedToSwitch = false;
+            enableAttackButtons();
+            return; // ⚠️ PAS DE TOUR JOUÉ
+        }
+
+        // --- SWITCH NORMAL (consomme le tour) ---
+        disableAttackButtons();
+
+        Attack enemyAttack = enemyAttacks.get((int)(Math.random() * enemyAttacks.size()));
+        BattleResult result = engine.executeTurn(player, enemy, null, enemyAttack);
+
+        updateLog(result);
+        renderer.render(player, enemy);
+
+        if (result.mustForceSwitch()) {
+            playerForcedToSwitch = true;
+            disableAttackButtons();
+            updateSwitchButtons();
+            return;
+        }
+
+        if (result.hasWinner()) {
+            disableAttackButtons();
+            return;
+        }
+
+        enableAttackButtons();
+    }
+
+
+    private void updateSwitchButtons() {
+
+        Button[] buttons = { pokemon1, pokemon2, pokemon3 };
+
+        for (int i = 0; i < player.getTeamSize(); i++) {
+
+            Pokemon p = player.getTeam()[i];
+            Button btn = buttons[i];
+
+            // Nom du Pokémon
+            btn.setText(p.getName());
+
+            // Reset des classes CSS
+            btn.getStyleClass().removeAll("switch-active", "switch-ko", "switch-available");
+
+            // KO → rouge sombre + disabled
+            if (player.isKO(i)) {
+                btn.getStyleClass().add("switch-ko");
+                btn.setDisable(true);
+                continue;
+            }
+
+            // Actif → gris + disabled
+            if (i == player.getActiveIndex()) {
+                btn.getStyleClass().add("switch-active");
+                btn.setDisable(true);
+                continue;
+            }
+
+            // Disponible → normal + cliquable
+            btn.getStyleClass().add("switch-available");
+            btn.setDisable(false);
+        }
+    }
+
+
+    @FXML private void onSwitch1() { switchPokemon(0); }
+    @FXML private void onSwitch2() { switchPokemon(1); }
+    @FXML private void onSwitch3() { switchPokemon(2); }
 }

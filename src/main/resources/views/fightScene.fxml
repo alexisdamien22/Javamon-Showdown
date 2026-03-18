@@ -89,9 +89,9 @@
 
             <HBox spacing="10" styleClass="button-row">
 
-                <Button fx:id="pokemon1" styleClass="switch-button" text="Slot 1"/>
-                <Button fx:id="pokemon2" styleClass="switch-button" text="Slot 2"/>
-                <Button fx:id="pokemon3" styleClass="switch-button" text="Slot 3"/>
+                <Button fx:id="pokemon1" onAction="#onSwitch1" styleClass="switch-button" text=""/>
+                <Button fx:id="pokemon2" onAction="#onSwitch2" styleClass="switch-button" text=""/>
+                <Button fx:id="pokemon3" onAction="#onSwitch3" styleClass="switch-button" text=""/>
 
             </HBox>
         </VBox>

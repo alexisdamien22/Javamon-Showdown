@@ -97,29 +97,130 @@
    TYPE COLORS (modulaire)
    =========================== */
 
+/* FIRE */
 .type-fire {
     -fx-background-color: linear-gradient(#ff7a4b, #d64a1f);
     -fx-border-color: #b33a17;
+    -fx-text-fill: white;
 }
 
+/* WATER */
 .type-water {
     -fx-background-color: linear-gradient(#4ba3ff, #1f6ed6);
     -fx-border-color: #174eb3;
+    -fx-text-fill: white;
 }
 
+/* GRASS */
 .type-grass {
     -fx-background-color: linear-gradient(#6bd66b, #3fa83f);
     -fx-border-color: #2f7a2f;
+    -fx-text-fill: white;
 }
 
+/* ELECTRIC */
+.type-electric {
+    -fx-background-color: linear-gradient(#ffe066, #d6b81f);
+    -fx-border-color: #b39a17;
+    -fx-text-fill: black;
+}
+
+/* ICE */
+.type-ice {
+    -fx-background-color: linear-gradient(#a8f0ff, #6fd6e8);
+    -fx-border-color: #4fb3c7;
+    -fx-text-fill: black;
+}
+
+/* FIGHTING */
+.type-fighting {
+    -fx-background-color: linear-gradient(#d66b6b, #a83f3f);
+    -fx-border-color: #7a2f2f;
+    -fx-text-fill: white;
+}
+
+/* POISON */
+.type-poison {
+    -fx-background-color: linear-gradient(#c66bd6, #8a3fa8);
+    -fx-border-color: #6b2f7a;
+    -fx-text-fill: white;
+}
+
+/* GROUND */
+.type-ground {
+    -fx-background-color: linear-gradient(#e0c066, #b89a3f);
+    -fx-border-color: #8a6f2f;
+    -fx-text-fill: black;
+}
+
+/* FLYING */
 .type-flying {
     -fx-background-color: linear-gradient(#a8c0ff, #6f87d6);
     -fx-border-color: #4f63b3;
+    -fx-text-fill: white;
 }
 
+/* PSYCHIC */
+.type-psychic {
+    -fx-background-color: linear-gradient(#ff6bb3, #d63f87);
+    -fx-border-color: #b32f6b;
+    -fx-text-fill: white;
+}
+
+/* BUG */
+.type-bug {
+    -fx-background-color: linear-gradient(#c6d66b, #a8b83f);
+    -fx-border-color: #7a8a2f;
+    -fx-text-fill: black;
+}
+
+/* ROCK */
+.type-rock {
+    -fx-background-color: linear-gradient(#d6c6a3, #b8a87f);
+    -fx-border-color: #8a7a5f;
+    -fx-text-fill: black;
+}
+
+/* GHOST */
+.type-ghost {
+    -fx-background-color: linear-gradient(#8b6bd6, #5f3fa8);
+    -fx-border-color: #3f2f7a;
+    -fx-text-fill: white;
+}
+
+/* DRAGON */
+.type-dragon {
+    -fx-background-color: linear-gradient(#6b8bd6, #3f5fa8);
+    -fx-border-color: #2f3f7a;
+    -fx-text-fill: white;
+}
+
+/* DARK */
+.type-dark {
+    -fx-background-color: linear-gradient(#6b6b6b, #3f3f3f);
+    -fx-border-color: #2f2f2f;
+    -fx-text-fill: white;
+}
+
+/* STEEL */
+.type-steel {
+    -fx-background-color: linear-gradient(#c6c6d6, #a8a8b8);
+    -fx-border-color: #7a7a8a;
+    -fx-text-fill: black;
+}
+
+/* FAIRY */
+.type-fairy {
+    -fx-background-color: linear-gradient(#ffb3e6, #d67fba);
+    -fx-border-color: #b36b9a;
+    -fx-text-fill: black;
+}
+
+/* NORMAL */
 .type-normal {
     -fx-background-color: linear-gradient(#d6d6d6, #b0b0b0);
     -fx-border-color: #8a8a8a;
+    -fx-text-fill: black;
 }
 
 /* ===========================
@@ -155,4 +256,19 @@
 .log-line {
     -fx-text-fill: #e0e0e0;
     -fx-font-size: 13px;
+}
+
+.switch-active {
+    -fx-background-color: #bbbbbb;
+    -fx-opacity: 0.8;
+}
+
+.switch-ko {
+    -fx-background-color: #550000;
+    -fx-text-fill: white;
+    -fx-opacity: 0.8;
+}
+
+.switch-available {
+    -fx-background-color: #dddddd;
 }

@@ -5,18 +5,18 @@ public class Attack {
     private int id;
     private String name;
     private String description;
-    private int typeId;
+    private Type type;
     private int pp;
     private String attackClass; // Physical / Special / Status
     private Integer power;
     private Integer precision;
     private int priority;
 
-    public Attack(int id, String name, String description, int typeId, int pp, String attackClass, Integer power, Integer precision, int priority) {
+    public Attack(int id, String name, String description, Type type, int pp, String attackClass, Integer power, Integer precision, int priority) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.typeId = typeId;
+        this.type = type;
         this.pp = pp;
         this.attackClass = attackClass;
         this.power = power;
@@ -27,7 +27,7 @@ public class Attack {
     public int getId() { return id; }
     public String getName() { return name; }
     public String getDescription() { return description; }
-    public int getTypeId() { return typeId; }
+    public Type getType() { return type; }
     public int getPp() { return pp; }
     public String getAttackClass() { return attackClass; }
     public Integer getPower() { return power; }

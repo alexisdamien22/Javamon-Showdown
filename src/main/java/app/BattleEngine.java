@@ -26,6 +26,7 @@ public class BattleEngine {
 
         if (playerFirst) {
 
+            // --- ATTAQUE DU JOUEUR ---
             performAttack(player, enemy, playerAttack, result);
 
             // KO ennemi → switch auto IA
@@ -34,61 +35,71 @@ public class BattleEngine {
 
                 if (!enemy.hasRemainingPokemon()) {
                     result.setWinner("player");
-                    return result;
                 }
+                return result; // FIN DU TOUR
             }
 
+            // --- ATTAQUE DE L'ENNEMI ---
             performAttack(enemy, player, enemyAttack, result);
 
-            // KO joueur → switch manuel dans l’UI
+            // KO joueur → STOP TOUR + SWITCH FORCÉ
             if (player.isKO()) {
                 result.add(BattleLogEntry.Type.KO, player.getName() + " est K.O. !");
-                if (!player.hasRemainingPokemon()) {
-                    result.setWinner("enemy");
+
+                if (player.hasRemainingPokemon()) {
+                    result.add(BattleLogEntry.Type.STATUS, "Choisissez un Pokémon à envoyer !");
+                    result.setForceSwitch(true); // ⚠️ IMPORTANT
+                    return result; // FIN DU TOUR
                 }
+
+                result.setWinner("enemy");
                 return result;
             }
 
         } else {
 
+            // --- ATTAQUE DE L'ENNEMI ---
             performAttack(enemy, player, enemyAttack, result);
 
+            // KO joueur → STOP TOUR + SWITCH FORCÉ
             if (player.isKO()) {
                 result.add(BattleLogEntry.Type.KO, player.getName() + " est K.O. !");
+
                 if (player.hasRemainingPokemon()) {
-                    
-                result.add(BattleLogEntry.Type.STATUS,
-                    "Choisissez un Pokémon à envoyer !");
+                    result.add(BattleLogEntry.Type.STATUS, "Choisissez un Pokémon à envoyer !");
+                    result.setForceSwitch(true); // ⚠️ IMPORTANT
+                    return result; // FIN DU TOUR
                 }
 
-                if (!player.hasRemainingPokemon()) {
-                    result.setWinner("enemy");
-                }
+                result.setWinner("enemy");
                 return result;
             }
 
+            // --- ATTAQUE DU JOUEUR ---
             performAttack(player, enemy, playerAttack, result);
 
+            // KO ennemi → switch auto IA
             if (enemy.isKO()) {
                 handleEnemyKO(enemy, result);
 
                 if (!enemy.hasRemainingPokemon()) {
                     result.setWinner("player");
                 }
-                return result;
+                return result; // FIN DU TOUR
             }
         }
 
         return result;
     }
 
+
     // ============================
     // ORDRE DU TOUR
     // ============================
     private boolean determineOrder(Battler p1, Battler p2, Attack a1, Attack a2) {
 
-        int prio1 = a1.getPriority();
-        int prio2 = a2.getPriority();
+        int prio1 = (a1 == null) ? 6 : a1.getPriority();
+        int prio2 = (a2 == null) ? 6 : a2.getPriority();
 
         if (prio1 != prio2)
             return prio1 > prio2;

@@ -22,12 +22,12 @@ public class DamageCalculator {
 
         double base = (((2 * attacker.getLevel() / 5.0) + 2) * attack.getPower() * (atk / def)) / 50 + 2;
 
-        if (attacker.hasType(attack.getTypeId()))
+        if (attacker.hasType(attack.getType().getId()))
             base *= 1.5;
 
         // ici on utilise bien getTypes()
         try {
-            base *= typeEffectivenessManager.getMultiplier(attack.getTypeId(), defender.getTypes());
+            base *= typeEffectivenessManager.getMultiplier(attack.getType().getId(), defender.getTypes());
         } catch (Exception e) {
             e.printStackTrace();
         }

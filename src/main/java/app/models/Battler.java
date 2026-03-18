@@ -2,7 +2,6 @@ package app.models;
 
 public class Battler {
 
-    private Pokemon base;     // Le Pokémon venant du PokemonManager
     private int[] currentHp;    // PV actuels
     private int level = 50;   // Niveau par défaut (modifiable)
 
@@ -22,6 +21,7 @@ public class Battler {
     public Type[] getTypes() { return team[activeIndex].getTypes(); }
     public Pokemon getBase() { return team[activeIndex]; }
     public Pokemon[] getTeam() { return team; }
+    public int getActiveIndex() { return activeIndex; }
 
 
     public boolean hasType(int typeId) {
@@ -70,5 +70,4 @@ public class Battler {
         }
         return false;
     }
-
 }

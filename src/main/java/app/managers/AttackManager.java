@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 import app.models.Attack;
+import app.models.Type;
 
 public class AttackManager extends AbstractManager {
 
@@ -88,16 +89,39 @@ public class AttackManager extends AbstractManager {
     }
 
     private Attack mapAttack(ResultSet rs) throws SQLException {
+
+        Type type = loadTypeForAttack(rs.getInt("TypeId"));
+
         return new Attack(
             rs.getInt("Id"),
             rs.getString("NameFR"),
             rs.getString("Description"),
-            rs.getInt("TypeId"),
+            type,
             rs.getInt("PP"),
             rs.getString("Class"),
             rs.getObject("Power") != null ? rs.getInt("Power") : null,
             rs.getObject("Precision") != null ? rs.getInt("Precision") : null,
             rs.getInt("Priority")
         );
+    }
+
+    private Type loadTypeForAttack(int typeId) throws SQLException {
+
+        Type type = null;
+
+        PreparedStatement stmt = connection.prepareStatement(
+                "SELECT * FROM types WHERE Id = ?"
+        );
+        stmt.setInt(1, typeId);
+
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            type = new Type(rs.getInt("Id"),rs.getString("Name"));
+        }
+
+        rs.close();
+        stmt.close();
+
+        return type;
     }
 }

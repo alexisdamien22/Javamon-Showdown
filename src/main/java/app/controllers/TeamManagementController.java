@@ -162,12 +162,6 @@ public class TeamManagementController {
     @FXML
         private void handleValidate() {
         try {
-                // Pokémon du joueur = premier slot
-                Pokemon p1 = pokedex.get(cb1.getValue());
-
-                // Pokémon ennemi arbitraire (ex: le 2e slot)
-                Pokemon pEnemy = pokedex.get(cb2.getValue());
-
                 Pokemon[] playerTeam = {
                         pokedex.get(cb1.getValue()),
                         pokedex.get(cb2.getValue()),
