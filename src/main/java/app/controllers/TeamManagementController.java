@@ -11,6 +11,11 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Polygon;
+import app.models.Battler;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 import java.util.*;
 
 import app.models.Pokemon;
@@ -155,9 +160,48 @@ public class TeamManagementController {
     }
 
     @FXML
-    private void handleValidate() {
-        btnValidate.setText("MISSION VALIDÉE ✓");
+        private void handleValidate() {
+        try {
+                // Pokémon du joueur = premier slot
+                Pokemon p1 = pokedex.get(cb1.getValue());
+
+                // Pokémon ennemi arbitraire (ex: le 2e slot)
+                Pokemon pEnemy = pokedex.get(cb2.getValue());
+
+                Pokemon[] playerTeam = {
+                        pokedex.get(cb1.getValue()),
+                        pokedex.get(cb2.getValue()),
+                        pokedex.get(cb3.getValue())
+                };
+
+                Pokemon[] enemyTeam = pokemonManager.getRandomTeam(3);
+
+                Battler player = new Battler(playerTeam);
+                Battler enemy = new Battler(enemyTeam);
+
+                openFightScene(player, enemy);
+
+        } catch (Exception e) {
+                e.printStackTrace();
+        }
     }
+
+    private void openFightScene(Battler player, Battler enemy) throws Exception {
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/fightScene.fxml"));
+        Parent root = loader.load();
+
+        FightController controller = loader.getController();
+        controller.setPlayer(player);
+        controller.setEnemy(enemy);
+
+        controller.startBattle();
+
+        Stage stage = (Stage) btnValidate.getScene().getWindow();
+        stage.setScene(new Scene(root));
+        stage.show();
+    }
+
 
     // -------------------------------------------------------------------------
     // Welcome screen

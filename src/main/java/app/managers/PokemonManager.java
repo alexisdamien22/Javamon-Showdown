@@ -8,6 +8,8 @@ import app.models.Pokemon;
 import app.models.Type;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class PokemonManager extends AbstractManager {
@@ -133,5 +135,13 @@ public class PokemonManager extends AbstractManager {
         stmt.close();
 
         return pokemon;
+    }
+
+    public Pokemon[] getRandomTeam(int size) throws SQLException {
+        Pokemon[] all = findAll();
+        List<Pokemon> list = new ArrayList<>(Arrays.asList(all));
+        Collections.shuffle(list);
+
+        return list.subList(0, size).toArray(new Pokemon[0]);
     }
 }

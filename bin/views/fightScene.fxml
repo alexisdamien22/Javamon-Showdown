@@ -35,7 +35,7 @@
             <HBox spacing="10" styleClass="button-row">
 
                 <!-- Attack 1 -->
-                <Button fx:id="attackBtn1" styleClass="attack-button" text="">
+                <Button fx:id="attackBtn1" onAction="#onAttack1Clicked" styleClass="attack-button" text="">
                     <graphic>
                         <VBox alignment="CENTER" styleClass="attack-content">
                             <Label styleClass="attack-name"/>
@@ -46,7 +46,7 @@
                 </Button>
 
                 <!-- Attack 2 -->
-                <Button fx:id="attackBtn2" styleClass="attack-button" text="">
+                <Button fx:id="attackBtn2" onAction="#onAttack2Clicked" styleClass="attack-button" text="">
                     <graphic>
                         <VBox alignment="CENTER" styleClass="attack-content">
                             <Label styleClass="attack-name"/>
@@ -57,7 +57,7 @@
                 </Button>
 
                 <!-- Attack 3 -->
-                <Button fx:id="attackBtn3" styleClass="attack-button" text="">
+                <Button fx:id="attackBtn3" onAction="#onAttack3Clicked" styleClass="attack-button" text="">
                     <graphic>
                         <VBox alignment="CENTER" styleClass="attack-content">
                             <Label styleClass="attack-name"/>
@@ -68,7 +68,7 @@
                 </Button>
 
                 <!-- Attack 4 -->
-                <Button fx:id="attackBtn4" styleClass="attack-button" text="">
+                <Button fx:id="attackBtn4" onAction="#onAttack4Clicked" styleClass="attack-button" text="">
                     <graphic>
                         <VBox alignment="CENTER" styleClass="attack-content">
                             <Label styleClass="attack-name"/>

@@ -17,40 +17,64 @@ public class BattleEngine {
     // ============================
     // EXECUTION D'UN TOUR
     // ============================
-    public BattleResult executeTurn(Battler player, Battler enemy, Attack playerAttack, Attack enemyAttack) {
+    public BattleResult executeTurn(Battler player, Battler enemy,
+                                    Attack playerAttack, Attack enemyAttack) {
 
         BattleResult result = new BattleResult();
 
-        // Déterminer l'ordre
         boolean playerFirst = determineOrder(player, enemy, playerAttack, enemyAttack);
 
         if (playerFirst) {
+
             performAttack(player, enemy, playerAttack, result);
 
+            // KO ennemi → switch auto IA
             if (enemy.isKO()) {
-                result.setWinner("player");
-                return result;
+                handleEnemyKO(enemy, result);
+
+                if (!enemy.hasRemainingPokemon()) {
+                    result.setWinner("player");
+                    return result;
+                }
             }
 
             performAttack(enemy, player, enemyAttack, result);
 
+            // KO joueur → switch manuel dans l’UI
             if (player.isKO()) {
-                result.setWinner("enemy");
+                result.add(BattleLogEntry.Type.KO, player.getName() + " est K.O. !");
+                if (!player.hasRemainingPokemon()) {
+                    result.setWinner("enemy");
+                }
                 return result;
             }
 
         } else {
+
             performAttack(enemy, player, enemyAttack, result);
 
             if (player.isKO()) {
-                result.setWinner("enemy");
+                result.add(BattleLogEntry.Type.KO, player.getName() + " est K.O. !");
+                if (player.hasRemainingPokemon()) {
+                    
+                result.add(BattleLogEntry.Type.STATUS,
+                    "Choisissez un Pokémon à envoyer !");
+                }
+
+                if (!player.hasRemainingPokemon()) {
+                    result.setWinner("enemy");
+                }
                 return result;
             }
 
             performAttack(player, enemy, playerAttack, result);
 
             if (enemy.isKO()) {
-                result.setWinner("player");
+                handleEnemyKO(enemy, result);
+
+                if (!enemy.hasRemainingPokemon()) {
+                    result.setWinner("player");
+                }
                 return result;
             }
         }
@@ -78,28 +102,50 @@ public class BattleEngine {
     // ============================
     // EXECUTION D'UNE ATTAQUE
     // ============================
-    private void performAttack(Battler attacker, Battler defender, Attack attack, BattleResult result) {
+    private void performAttack(Battler attacker, Battler defender,
+                               Attack attack, BattleResult result) {
 
         if (attack == null) return;
 
-        // Log attaque
         result.add(BattleLogEntry.Type.ATTACK,
                 attacker.getName() + " utilise " + attack.getName() + " !");
 
-        // Calcul dégâts
         int damage = calculator.compute(attacker, defender, attack);
 
-        // Log dégâts
         result.add(BattleLogEntry.Type.DAMAGE,
                 defender.getName() + " perd " + damage + " PV !");
 
-        // Appliquer dégâts
         defender.takeDamage(damage);
 
-        // Log KO
         if (defender.isKO()) {
             result.add(BattleLogEntry.Type.KO,
                     defender.getName() + " est K.O. !");
         }
     }
+
+    // ============================
+    // SWITCH AUTOMATIQUE DE L'IA
+    // ============================
+    private void handleEnemyKO(Battler enemy, BattleResult result) {
+
+        result.add(BattleLogEntry.Type.KO,
+                enemy.getName() + " est K.O. !");
+
+        if (!enemy.hasRemainingPokemon()) return;
+
+        int next = findNextAlive(enemy);
+        enemy.switchTo(next);
+
+        result.add(BattleLogEntry.Type.STATUS,
+                "L'ennemi envoie " + enemy.getName() + " !");
+    }
+
+    private int findNextAlive(Battler b) {
+        for (int i = 0; i < b.getTeamSize(); i++) {
+            if (!b.isKO(i)) return i;
+        }
+        return 0;
+    }
 }
+
+ 

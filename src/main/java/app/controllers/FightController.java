@@ -1,6 +1,7 @@
 package app.controllers;
 
 import javafx.fxml.FXML;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -11,6 +12,7 @@ import app.managers.AttackManager;
 import app.managers.TypeEffectivenessManager;
 import app.BattleEngine;
 import app.BattleLogEntry;
+import app.BattleRenderer;
 import app.BattleResult;
 
 import java.util.ArrayList;
@@ -23,7 +25,11 @@ public class FightController {
     @FXML private Button attackBtn4;
 
     @FXML private VBox logContainer;
-    @FXML private TextArea logArea;
+
+    @FXML private Canvas canvas;
+
+    private BattleRenderer renderer;
+
 
     private Battler player;
     private Battler enemy;
@@ -41,6 +47,9 @@ public class FightController {
         try {
             TypeEffectivenessManager typeManager = new TypeEffectivenessManager();
             engine = new BattleEngine(typeManager);
+
+            renderer = new BattleRenderer(canvas);
+            renderer.render(player, enemy);
 
             AttackManager attackManager = new AttackManager();
 
@@ -119,8 +128,10 @@ public class FightController {
 
         updateLog(result);
 
+        renderer.render(player, enemy);
+
         if (result.hasWinner()) {
-            logArea.appendText("\n" + result.getWinner() + " a gagné !");
+            addLog(new BattleLogEntry(BattleLogEntry.Type.INFO, result.getWinner() + " a gagné !"));
             disableButtons();
         }
     }

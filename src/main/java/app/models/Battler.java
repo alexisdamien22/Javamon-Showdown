@@ -3,51 +3,72 @@ package app.models;
 public class Battler {
 
     private Pokemon base;     // Le Pokémon venant du PokemonManager
-    private int currentHP;    // PV actuels
+    private int[] currentHp;    // PV actuels
     private int level = 50;   // Niveau par défaut (modifiable)
 
-    public Battler(Pokemon base) {
-        this.base = base;
-        this.currentHP = base.getHp();
+    private Pokemon[] team;
+    private int activeIndex = 0;
+
+    public Battler(Pokemon[] team) {
+        this.team = team;
+        this.currentHp = new int[team.length];
+
+        for (int i = 0; i < team.length; i++) {
+            currentHp[i] = team[i].getHp();
+        }
     }
 
-    public String getName() {
-        return base.getName();
-    }
+    public String getName() { return team[activeIndex].getName(); }
+    public Type[] getTypes() { return team[activeIndex].getTypes(); }
+    public Pokemon getBase() { return team[activeIndex]; }
+    public Pokemon[] getTeam() { return team; }
 
-    public Type[] getTypes() {
-        return base.getTypes();
-    }
 
     public boolean hasType(int typeId) {
-        for (Type t : base.getTypes()) {
+        for (Type t : team[activeIndex].getTypes()) {
             if (t.getId() == typeId) return true;
         }
         return false;
     }
 
 
-    public int getAtk() { return base.getAttack(); }
-    public int getDef() { return base.getDefense(); }
-    public int getSpAtk() { return base.getAtkSp(); }
-    public int getSpDef() { return base.getDefSp(); }
-    public int getSpeed() { return base.getSpeed(); }
+    public int getAtk() { return team[activeIndex].getAttack(); }
+    public int getDef() { return team[activeIndex].getDefense(); }
+    public int getSpAtk() { return team[activeIndex].getAtkSp(); }
+    public int getSpDef() { return team[activeIndex].getDefSp(); }
+    public int getSpeed() { return team[activeIndex].getSpeed(); }
+    public int getMaxHp() { return team[activeIndex].getHp(); }
 
-    public int getCurrentHP() { return currentHP; }
+    public int getCurrentHp() { return currentHp[activeIndex]; }
+
+    public int getTeamSize() { return team.length; }
+
 
     public void takeDamage(int dmg) {
-        currentHP = Math.max(0, currentHP - dmg);
+        currentHp[activeIndex] = Math.max(0, currentHp[activeIndex] - dmg);
+    }
+
+    public boolean isKO(int index) {
+        return currentHp[index] <= 0;
     }
 
     public boolean isKO() {
-        return currentHP <= 0;
+        return currentHp[activeIndex] <= 0;
     }
 
-    public int getLevel() {
-        return level;
+    public int getLevel() { return level; }
+
+    public void switchTo(int index) {
+        if (index >= 0 && index < team.length) {
+            activeIndex = index;
+        }
     }
 
-    public Pokemon getBase() {
-        return base;
+    public boolean hasRemainingPokemon() {
+        for (int hp : currentHp) {
+            if (hp > 0) return true;
+        }
+        return false;
     }
+
 }
