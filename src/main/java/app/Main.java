@@ -9,10 +9,10 @@ public class Main extends Application {
     @Override 
     public void start(Stage stage) throws Exception { 
         FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/views/teamManagement.fxml")
+                getClass().getResource("/views/mainTitle.fxml")
         );
         Scene scene = new Scene(loader.load(), 1200, 800);
-        stage.setTitle("Javamon Lab - Gestion d'équipe");
+        stage.setTitle("Javamon Showdown");
         stage.setScene(scene);
         stage.show();
     }

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.* ?>
+<?import javafx.scene.control.* ?>
+<?import java.net.URL?>
+
+<StackPane fx:id="root" prefWidth="1200" prefHeight="800"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="app.controllers.MainTitleController">
+    <stylesheets>
+        <URL value="@../styles/mainTitle.css" />
+    </stylesheets>
+    <children>
+
+        <Pane styleClass="splash-bg" />
+
+        <VBox alignment="CENTER" spacing="0" styleClass="splash-content">
+
+            <Label text="JAVAMON" styleClass="splash-title-main" />
+
+            <Label text="SHOWDOWN" styleClass="splash-title-sub" />
+
+            <Region prefHeight="80" />
+
+            <Label fx:id="pressEnterLabel"
+                   text="Appuyez sur ENTRÉE"
+                   styleClass="splash-press-enter" />
+
+        </VBox>
+
+        <Label text="Noa Krieger · Alexis · Damien — Javamon Showdown, tous droits réservés"
+               styleClass="splash-credits"
+               StackPane.alignment="BOTTOM_CENTER" />
+
+    </children>
+</StackPane>

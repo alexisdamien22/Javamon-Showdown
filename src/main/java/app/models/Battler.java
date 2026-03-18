@@ -1,19 +1,26 @@
 package app.models;
 
+import java.util.ArrayList;
+
 public class Battler {
 
-    private int[] currentHp;    // PV actuels
-    private int level = 50;   // Niveau par défaut (modifiable)
+    private int[] currentHp;
+    private int level = 50;
 
     private Pokemon[] team;
     private int activeIndex = 0;
 
+    private ArrayList<Attack>[] attacks;
+
+    @SuppressWarnings("unchecked")
     public Battler(Pokemon[] team) {
         this.team = team;
         this.currentHp = new int[team.length];
+        this.attacks = new ArrayList[team.length];
 
         for (int i = 0; i < team.length; i++) {
             currentHp[i] = team[i].getHp();
+            attacks[i] = new ArrayList<>();
         }
     }
 
@@ -22,15 +29,7 @@ public class Battler {
     public Pokemon getBase() { return team[activeIndex]; }
     public Pokemon[] getTeam() { return team; }
     public int getActiveIndex() { return activeIndex; }
-
-
-    public boolean hasType(int typeId) {
-        for (Type t : team[activeIndex].getTypes()) {
-            if (t.getId() == typeId) return true;
-        }
-        return false;
-    }
-
+    public int getTeamSize() { return team.length; }
 
     public int getAtk() { return team[activeIndex].getAttack(); }
     public int getDef() { return team[activeIndex].getDefense(); }
@@ -41,8 +40,20 @@ public class Battler {
 
     public int getCurrentHp() { return currentHp[activeIndex]; }
 
-    public int getTeamSize() { return team.length; }
+    public boolean hasType(int typeId) {
+        for (Type t : team[activeIndex].getTypes()) {
+            if (t.getId() == typeId) return true;
+        }
+        return false;
+    }
 
+    public void setAttacksForActive(ArrayList<Attack> list) {
+        attacks[activeIndex] = list;
+    }
+
+    public ArrayList<Attack> getAttacksForActive() {
+        return attacks[activeIndex];
+    }
 
     public void takeDamage(int dmg) {
         currentHp[activeIndex] = Math.max(0, currentHp[activeIndex] - dmg);
@@ -56,7 +67,12 @@ public class Battler {
         return currentHp[activeIndex] <= 0;
     }
 
-    public int getLevel() { return level; }
+    public boolean hasRemainingPokemon() {
+        for (int hp : currentHp) {
+            if (hp > 0) return true;
+        }
+        return false;
+    }
 
     public void switchTo(int index) {
         if (index >= 0 && index < team.length) {
@@ -64,10 +80,5 @@ public class Battler {
         }
     }
 
-    public boolean hasRemainingPokemon() {
-        for (int hp : currentHp) {
-            if (hp > 0) return true;
-        }
-        return false;
-    }
+    public int getLevel() { return level; }
 }

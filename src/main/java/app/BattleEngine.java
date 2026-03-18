@@ -14,9 +14,6 @@ public class BattleEngine {
         this.calculator = new DamageCalculator(typeManager);
     }
 
-    // ============================
-    // EXECUTION D'UN TOUR
-    // ============================
     public BattleResult executeTurn(Battler player, Battler enemy,
                                     Attack playerAttack, Attack enemyAttack) {
 
@@ -26,30 +23,26 @@ public class BattleEngine {
 
         if (playerFirst) {
 
-            // --- ATTAQUE DU JOUEUR ---
             performAttack(player, enemy, playerAttack, result);
 
-            // KO ennemi → switch auto IA
             if (enemy.isKO()) {
                 handleEnemyKO(enemy, result);
 
                 if (!enemy.hasRemainingPokemon()) {
                     result.setWinner("player");
                 }
-                return result; // FIN DU TOUR
+                return result;
             }
 
-            // --- ATTAQUE DE L'ENNEMI ---
             performAttack(enemy, player, enemyAttack, result);
 
-            // KO joueur → STOP TOUR + SWITCH FORCÉ
             if (player.isKO()) {
                 result.add(BattleLogEntry.Type.KO, player.getName() + " est K.O. !");
 
                 if (player.hasRemainingPokemon()) {
                     result.add(BattleLogEntry.Type.STATUS, "Choisissez un Pokémon à envoyer !");
-                    result.setForceSwitch(true); // ⚠️ IMPORTANT
-                    return result; // FIN DU TOUR
+                    result.setForceSwitch(true);
+                    return result;
                 }
 
                 result.setWinner("enemy");
@@ -58,44 +51,37 @@ public class BattleEngine {
 
         } else {
 
-            // --- ATTAQUE DE L'ENNEMI ---
             performAttack(enemy, player, enemyAttack, result);
 
-            // KO joueur → STOP TOUR + SWITCH FORCÉ
             if (player.isKO()) {
                 result.add(BattleLogEntry.Type.KO, player.getName() + " est K.O. !");
 
                 if (player.hasRemainingPokemon()) {
                     result.add(BattleLogEntry.Type.STATUS, "Choisissez un Pokémon à envoyer !");
-                    result.setForceSwitch(true); // ⚠️ IMPORTANT
-                    return result; // FIN DU TOUR
+                    result.setForceSwitch(true);
+                    return result;
                 }
 
                 result.setWinner("enemy");
                 return result;
             }
 
-            // --- ATTAQUE DU JOUEUR ---
             performAttack(player, enemy, playerAttack, result);
 
-            // KO ennemi → switch auto IA
+
             if (enemy.isKO()) {
                 handleEnemyKO(enemy, result);
 
                 if (!enemy.hasRemainingPokemon()) {
                     result.setWinner("player");
                 }
-                return result; // FIN DU TOUR
+                return result;
             }
         }
 
         return result;
     }
 
-
-    // ============================
-    // ORDRE DU TOUR
-    // ============================
     private boolean determineOrder(Battler p1, Battler p2, Attack a1, Attack a2) {
 
         int prio1 = (a1 == null) ? 6 : a1.getPriority();
@@ -110,33 +96,36 @@ public class BattleEngine {
         return p1.getSpeed() >= p2.getSpeed();
     }
 
-    // ============================
-    // EXECUTION D'UNE ATTAQUE
-    // ============================
     private void performAttack(Battler attacker, Battler defender,
-                               Attack attack, BattleResult result) {
+                                Attack attack, BattleResult result) {
 
-        if (attack == null) return;
+            if (attack == null) return;
 
-        result.add(BattleLogEntry.Type.ATTACK,
-                attacker.getName() + " utilise " + attack.getName() + " !");
+            if (attack.getPp() <= 0) {
+                result.add(BattleLogEntry.Type.STATUS,
+                        attack.getName() + " n’a plus de PP !");
+                return;
+            }
 
-        int damage = calculator.compute(attacker, defender, attack);
+            attack.setPp(attack.getPp() - 1);
 
-        result.add(BattleLogEntry.Type.DAMAGE,
-                defender.getName() + " perd " + damage + " PV !");
+            result.add(BattleLogEntry.Type.ATTACK,
+                    attacker.getName() + " utilise " + attack.getName() + " !");
 
-        defender.takeDamage(damage);
+            int damage = calculator.compute(attacker, defender, attack);
 
-        if (defender.isKO()) {
-            result.add(BattleLogEntry.Type.KO,
-                    defender.getName() + " est K.O. !");
+            result.add(BattleLogEntry.Type.DAMAGE,
+                    defender.getName() + " perd " + damage + " PV !");
+
+            defender.takeDamage(damage);
+
+            if (defender.isKO()) {
+                result.add(BattleLogEntry.Type.KO,
+                        defender.getName() + " est K.O. !");
+            }
         }
-    }
 
-    // ============================
-    // SWITCH AUTOMATIQUE DE L'IA
-    // ============================
+
     private void handleEnemyKO(Battler enemy, BattleResult result) {
 
         result.add(BattleLogEntry.Type.KO,
@@ -158,5 +147,3 @@ public class BattleEngine {
         return 0;
     }
 }
-
- 

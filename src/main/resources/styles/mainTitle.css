@@ -1,0 +1,55 @@
+/* Fond avec explosion de feu simulée en dégradés */
+.splash-bg {
+    -fx-background-color:
+            radial-gradient(center 50% 60%, radius 70%,
+            #fefcfb, #1282a2, #034078);
+    -fx-background-color:
+            radial-gradient(center 50% 50%, radius 80%,
+            #1282a2 0%, rgb(3, 64, 120) 25%, #001f54 55%, #0a1128 100%);
+}
+
+/* Container principal */
+.splash-content {
+    -fx-padding: 0 0 60 0;
+}
+
+/* "JAVAMON" - style lettres jaunes/bleues inspiré Pokémon */
+.splash-title-main {
+    -fx-font-size: 110;
+    -fx-font-weight: 900;
+    -fx-text-fill: #6290c8;
+    -fx-effect:
+            dropshadow(three-pass-box, #376996, 0, 0, 6, 6),
+            dropshadow(three-pass-box, #1f487e, 0, 0, 3, 3),
+            dropshadow(three-pass-box, #1d3461, 8, 0.4, 0, 0);
+}
+
+/* "SHOWDOWN" - style rouge/blanc */
+.splash-title-sub {
+    -fx-font-size: 72;
+    -fx-font-weight: 900;
+    -fx-text-fill: #9ca3db;
+    -fx-effect:
+            dropshadow(three-pass-box, #9067c6, 0, 0, 5, 5),
+            dropshadow(three-pass-box, #242038, 0, 0, 10, 3),
+            dropshadow(three-pass-box, #000000, 6, 0.5, 0, 0);
+    -fx-translate-y: -15;
+}
+
+/* "Appuyez sur ENTRÉE" - clignotant */
+.splash-press-enter {
+    -fx-font-size: 22;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-background-color: rgba(0, 0, 0, 0.55);
+    -fx-background-radius: 4;
+    -fx-padding: 8 24;
+    -fx-effect: dropshadow(gaussian, #000000, 4, 0.3, 0, 1);
+}
+
+/* Crédits discrets */
+.splash-credits {
+    -fx-font-size: 11;
+    -fx-text-fill: rgba(255, 255, 255, 0.45);
+    -fx-padding: 0 0 14 0;
+}

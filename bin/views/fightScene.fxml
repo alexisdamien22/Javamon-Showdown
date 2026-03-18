@@ -13,9 +13,6 @@
       styleClass="root-container"
       stylesheets="@../styles/fightScene.css">
 
-    <!-- ===========================
-         COLONNE GAUCHE : COMBAT
-         =========================== -->
     <VBox spacing="10" styleClass="main-column">
 
         <Canvas fx:id="canvas"
@@ -26,7 +23,6 @@
         <Label fx:id="mainLabel"
                styleClass="main-label"/>
 
-        <!-- ======= ATTACKS ======= -->
         <VBox spacing="5" styleClass="action-block">
             <Label fx:id="labelAttack"
                    text="Attack"
@@ -34,7 +30,6 @@
 
             <HBox spacing="10" styleClass="button-row">
 
-                <!-- Attack 1 -->
                 <Button fx:id="attackBtn1" onAction="#onAttack1Clicked" styleClass="attack-button" text="">
                     <graphic>
                         <VBox alignment="CENTER" styleClass="attack-content">
@@ -45,7 +40,6 @@
                     </graphic>
                 </Button>
 
-                <!-- Attack 2 -->
                 <Button fx:id="attackBtn2" onAction="#onAttack2Clicked" styleClass="attack-button" text="">
                     <graphic>
                         <VBox alignment="CENTER" styleClass="attack-content">
@@ -56,7 +50,6 @@
                     </graphic>
                 </Button>
 
-                <!-- Attack 3 -->
                 <Button fx:id="attackBtn3" onAction="#onAttack3Clicked" styleClass="attack-button" text="">
                     <graphic>
                         <VBox alignment="CENTER" styleClass="attack-content">
@@ -67,7 +60,6 @@
                     </graphic>
                 </Button>
 
-                <!-- Attack 4 -->
                 <Button fx:id="attackBtn4" onAction="#onAttack4Clicked" styleClass="attack-button" text="">
                     <graphic>
                         <VBox alignment="CENTER" styleClass="attack-content">
@@ -81,7 +73,6 @@
             </HBox>
         </VBox>
 
-        <!-- ======= SWITCH ======= -->
         <VBox spacing="5" styleClass="action-block">
             <Label fx:id="labelSwitch"
                    text="Switch"
@@ -98,9 +89,6 @@
 
     </VBox>
 
-    <!-- ===========================
-         COLONNE DROITE : LOG
-         =========================== -->
     <ScrollPane fx:id="logScroll"
                 fitToWidth="true"
                 styleClass="log-scroll">

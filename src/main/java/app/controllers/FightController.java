@@ -57,8 +57,12 @@ public class FightController {
 
             AttackManager attackManager = new AttackManager();
 
-            playerAttacks = attackManager.findByPokemonId(player.getBase().getId());
-            enemyAttacks = attackManager.findByPokemonId(enemy.getBase().getId());
+            playerAttacks = attackManager.getRandomAttacksForPokemon(player.getBase().getId());
+            player.setAttacksForActive(playerAttacks);
+
+            enemyAttacks = attackManager.getRandomAttacksForPokemon(enemy.getBase().getId());
+            enemy.setAttacksForActive(enemyAttacks);
+
 
             setAttackButtons();
 
@@ -70,11 +74,23 @@ public class FightController {
     }
 
     private void setAttackButtons() {
-        fillAttackButton(attackBtn1, playerAttacks.get(0));
-        fillAttackButton(attackBtn2, playerAttacks.get(1));
-        fillAttackButton(attackBtn3, playerAttacks.get(2));
-        fillAttackButton(attackBtn4, playerAttacks.get(3));
+
+        Button[] buttons = { attackBtn1, attackBtn2, attackBtn3, attackBtn4 };
+
+        for (int i = 0; i < 4; i++) {
+            playerAttacks = player.getAttacksForActive();
+
+            if (i < playerAttacks.size()) {
+                fillAttackButton(buttons[i], playerAttacks.get(i));
+                buttons[i].setDisable(false);
+                buttons[i].setVisible(true);
+            } else {
+                buttons[i].setDisable(true);
+                buttons[i].setVisible(false);
+            }
+        }
     }
+
 
     private void disableAttackButtons() {
         attackBtn1.setDisable(true);
@@ -102,7 +118,10 @@ public class FightController {
 
         nameLabel.setText(attack.getName());
         typeLabel.setText(getTypeName(attack.getType().getId()));
-        ppLabel.setText(attack.getPp() + "/" + attack.getPp());
+
+        ppLabel.setText(attack.getPp() + "/" + attack.getMaxPp());
+
+        button.setDisable(attack.getPp() <= 0);
 
         button.getStyleClass().removeIf(c -> c.startsWith("type-"));
 
@@ -152,7 +171,6 @@ public class FightController {
         addLog(new BattleLogEntry(BattleLogEntry.Type.INFO, "=== Tour " + turn + " ==="));
         turn++;
 
-        // IA ennemie simple : attaque aléatoire
         Attack enemyAttack = enemyAttacks.get((int)(Math.random() * enemyAttacks.size()));
 
         BattleResult result = engine.executeTurn(player, enemy, chosenAttack, enemyAttack);
@@ -160,6 +178,8 @@ public class FightController {
         updateLog(result);
 
         renderer.render(player, enemy);
+
+        setAttackButtons();
 
         if (result.hasWinner()) {
             addLog(new BattleLogEntry(BattleLogEntry.Type.INFO, result.getWinner() + " a gagné !"));
@@ -213,15 +233,20 @@ public class FightController {
 
     private void switchPokemon(int index) {
 
-        // Impossible de switch sur KO ou actif
         if (player.isKO(index) || index == player.getActiveIndex()) return;
 
-        // Switch effectif
         player.switchTo(index);
 
         try {
-            AttackManager attackManager = new AttackManager();
-            playerAttacks = attackManager.findByPokemonId(player.getBase().getId());
+            if (player.getAttacksForActive().isEmpty()) {
+                AttackManager attackManager = new AttackManager();
+                player.setAttacksForActive(
+                    attackManager.getRandomAttacksForPokemon(player.getBase().getId())
+                );
+            }
+
+            playerAttacks = player.getAttacksForActive();
+
             setAttackButtons();
         } catch (Exception e) {
             e.printStackTrace();
@@ -237,14 +262,12 @@ public class FightController {
         renderer.render(player, enemy);
         updateSwitchButtons();
 
-        // --- SWITCH FORCÉ (après KO) ---
         if (playerForcedToSwitch) {
             playerForcedToSwitch = false;
             enableAttackButtons();
-            return; // ⚠️ PAS DE TOUR JOUÉ
+            return;
         }
 
-        // --- SWITCH NORMAL (consomme le tour) ---
         disableAttackButtons();
 
         Attack enemyAttack = enemyAttacks.get((int)(Math.random() * enemyAttacks.size()));
@@ -281,24 +304,20 @@ public class FightController {
             // Nom du Pokémon
             btn.setText(p.getName());
 
-            // Reset des classes CSS
             btn.getStyleClass().removeAll("switch-active", "switch-ko", "switch-available");
 
-            // KO → rouge sombre + disabled
             if (player.isKO(i)) {
                 btn.getStyleClass().add("switch-ko");
                 btn.setDisable(true);
                 continue;
             }
 
-            // Actif → gris + disabled
             if (i == player.getActiveIndex()) {
                 btn.getStyleClass().add("switch-active");
                 btn.setDisable(true);
                 continue;
             }
 
-            // Disponible → normal + cliquable
             btn.getStyleClass().add("switch-available");
             btn.setDisable(false);
         }

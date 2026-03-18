@@ -29,7 +29,7 @@ public class TypeEffectivenessManager extends AbstractManager {
             if (rs.next()) {
                 result *= rs.getDouble("multiplier");
             } else {
-                result *= 1.0; // par défaut
+                result *= 1.0;
             }
 
             rs.close();

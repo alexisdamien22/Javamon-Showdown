@@ -25,7 +25,6 @@ public class DamageCalculator {
         if (attacker.hasType(attack.getType().getId()))
             base *= 1.5;
 
-        // ici on utilise bien getTypes()
         try {
             base *= typeEffectivenessManager.getMultiplier(attack.getType().getId(), defender.getTypes());
         } catch (Exception e) {

@@ -7,7 +7,8 @@ public class Attack {
     private String description;
     private Type type;
     private int pp;
-    private String attackClass; // Physical / Special / Status
+    private int maxPp;
+    private String attackClass;
     private Integer power;
     private Integer precision;
     private int priority;
@@ -18,6 +19,7 @@ public class Attack {
         this.description = description;
         this.type = type;
         this.pp = pp;
+        this.maxPp = pp;
         this.attackClass = attackClass;
         this.power = power;
         this.precision = precision;
@@ -29,6 +31,7 @@ public class Attack {
     public String getDescription() { return description; }
     public Type getType() { return type; }
     public int getPp() { return pp; }
+    public int getMaxPp() { return maxPp; }
     public String getAttackClass() { return attackClass; }
     public Integer getPower() { return power; }
     public Integer getPrecision() { return precision; }

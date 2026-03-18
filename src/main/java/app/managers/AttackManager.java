@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import app.models.Attack;
 import app.models.Type;
@@ -124,4 +125,22 @@ public class AttackManager extends AbstractManager {
 
         return type;
     }
+
+    public ArrayList<Attack> getRandomAttacksForPokemon(int pokemonId) throws Exception {
+
+        ArrayList<Attack> all = findByPokemonId(pokemonId);
+
+        if (all.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        Collections.shuffle(all);
+
+        int count = 1 + (int)(Math.random() * 4);
+
+        count = Math.min(count, all.size());
+
+        return new ArrayList<>(all.subList(0, count));
+    }
+
 }

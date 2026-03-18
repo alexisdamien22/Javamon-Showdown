@@ -32,7 +32,6 @@ public class TeamManagementController {
 
     private PokemonManager pokemonManager;
     private Map<String, Pokemon> pokedex = new HashMap<>();
-    // Guard flag: blocks onAction events fired by setItems()/setValue()
     private boolean isUpdating = false;
 
     private final Map<String, String> typeColors = Map.ofEntries(
@@ -54,10 +53,6 @@ public class TeamManagementController {
             Map.entry("Water",        "#1656DB"),
             Map.entry("Psychic",        "#FF6B9D")
     );
-
-    // -------------------------------------------------------------------------
-    // Initialization
-    // -------------------------------------------------------------------------
 
     @FXML
     public void initialize() {
@@ -100,10 +95,6 @@ public class TeamManagementController {
         checkValidation();
     }
 
-    // -------------------------------------------------------------------------
-    // List management (no duplicates)
-    // -------------------------------------------------------------------------
-
     private void refreshLists() {
         Set<String> selected = getSelectedNames();
         isUpdating = true;
@@ -137,10 +128,6 @@ public class TeamManagementController {
         b.setItems(FXCollections.observableArrayList(available));
         b.setValue(current);
     }
-
-    // -------------------------------------------------------------------------
-    // Validation
-    // -------------------------------------------------------------------------
 
     private void checkValidation() {
         boolean allSelected =
@@ -195,11 +182,6 @@ public class TeamManagementController {
         stage.setScene(new Scene(root));
         stage.show();
     }
-
-
-    // -------------------------------------------------------------------------
-    // Welcome screen
-    // -------------------------------------------------------------------------
 
     private void showWelcomeScreen() {
         VBox welcome = new VBox(35);
@@ -329,10 +311,6 @@ public class TeamManagementController {
         return hint;
     }
 
-    // -------------------------------------------------------------------------
-    // Pokemon display
-    // -------------------------------------------------------------------------
-
     private void updateDisplay(String name) {
         Pokemon p = pokedex.get(name);
         String[] types = Arrays.stream(p.getTypes()).map(Type::getName).toArray(String[]::new); 
@@ -461,10 +439,6 @@ public class TeamManagementController {
         return v;
     }
 
-    // -------------------------------------------------------------------------
-    // Radar chart
-    // -------------------------------------------------------------------------
-
     private Pane drawRadar(Pokemon p, String typeColor) {
         Pane pane = new Pane();
         pane.setMinSize(260, 260);
@@ -557,10 +531,6 @@ public class TeamManagementController {
             poly.getStyleClass().add("radar-poly-fill");
         }
     }
-
-    // -------------------------------------------------------------------------
-    // Utilities
-    // -------------------------------------------------------------------------
 
     private String darken(String hex, double factor) {
         try {
